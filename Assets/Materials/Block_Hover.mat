@@ -187,7 +187,7 @@ Material:
     - _OutlineScale: 1
     - _OutlineTextureLOD: 5
     - _OutlineTextureType: 0
-    - _OutlineWidth: 2.67
+    - _OutlineWidth: 1.07
     - _OverrideLightmapDir: 0
     - _Parallax: 0.02
     - _QueueOffset: 0

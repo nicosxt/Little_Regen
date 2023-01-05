@@ -90,7 +90,7 @@ public class BlockManager : MonoBehaviour
                     hoveredBlock.GetComponent<Renderer>().material = hoverMaterial;
                 }
             }
-            Debug.Log("Hover on object: " + hit.collider.gameObject.name);
+            //Debug.Log("Hover on object: " + hit.collider.gameObject.name);
         }else{
             if(hoveredBlock != null){
                 hoveredBlock.GetComponent<Renderer>().material = defaultMaterial;

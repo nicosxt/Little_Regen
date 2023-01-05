@@ -35,6 +35,17 @@ public class ObjectManager : MonoBehaviour
     {
         
     }
+
+    //Change currentObject via UI
+    public void SetCurrentObject(string name){
+        foreach(PlantObject obj in objects){
+            if(obj.name == name){
+                currentObject = obj;
+            }
+        }
+
+        Debug.Log("set curObj to be " + name);
+    }
 }
 
 public class PlantObject{
