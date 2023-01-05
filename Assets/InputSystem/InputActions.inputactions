@@ -6,7 +6,7 @@
             "id": "8fd54349-a36f-4462-82fa-97998e0505f1",
             "actions": [
                 {
-                    "name": "Plant",
+                    "name": "Click",
                     "type": "Button",
                     "id": "0191281d-8675-4439-b6e4-df95c876ceb3",
                     "expectedControlType": "Button",
@@ -23,7 +23,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Plant",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -34,12 +34,18 @@
                     "interactions": "Tap",
                     "processors": "",
                     "groups": "",
-                    "action": "Plant",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "PlantObject",
+            "bindingGroup": "PlantObject",
+            "devices": []
+        }
+    ]
 }

@@ -29,12 +29,11 @@ public class ClickToAddd : MonoBehaviour
 
     void Start()
     {
-        inputActions.Default.Plant.canceled += OnPlant;
-         Debug.DrawRay(new Vector3(0,0,0), camera.transform.forward, Color.green);
+        inputActions.Default.Click.canceled += OnPlant;
     }
 
     void Update() {
-        float buttonPressed = inputActions.Default.Plant.ReadValue<float>();
+        float buttonPressed = inputActions.Default.Click.ReadValue<float>();
         if (buttonPressed > 0.5f) {
             Debug.Log("Button pressed");
         }

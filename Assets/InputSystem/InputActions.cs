@@ -28,7 +28,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
             ""id"": ""8fd54349-a36f-4462-82fa-97998e0505f1"",
             ""actions"": [
                 {
-                    ""name"": ""Plant"",
+                    ""name"": ""Click"",
                     ""type"": ""Button"",
                     ""id"": ""0191281d-8675-4439-b6e4-df95c876ceb3"",
                     ""expectedControlType"": ""Button"",
@@ -45,7 +45,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Plant"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -56,18 +56,24 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Plant"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""PlantObject"",
+            ""bindingGroup"": ""PlantObject"",
+            ""devices"": []
+        }
+    ]
 }");
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
-        m_Default_Plant = m_Default.FindAction("Plant", throwIfNotFound: true);
+        m_Default_Click = m_Default.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -127,12 +133,12 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     // Default
     private readonly InputActionMap m_Default;
     private IDefaultActions m_DefaultActionsCallbackInterface;
-    private readonly InputAction m_Default_Plant;
+    private readonly InputAction m_Default_Click;
     public struct DefaultActions
     {
         private @InputActions m_Wrapper;
         public DefaultActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Plant => m_Wrapper.m_Default_Plant;
+        public InputAction @Click => m_Wrapper.m_Default_Click;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -142,22 +148,31 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_DefaultActionsCallbackInterface != null)
             {
-                @Plant.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPlant;
-                @Plant.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPlant;
-                @Plant.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPlant;
+                @Click.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Plant.started += instance.OnPlant;
-                @Plant.performed += instance.OnPlant;
-                @Plant.canceled += instance.OnPlant;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
     public DefaultActions @Default => new DefaultActions(this);
+    private int m_PlantObjectSchemeIndex = -1;
+    public InputControlScheme PlantObjectScheme
+    {
+        get
+        {
+            if (m_PlantObjectSchemeIndex == -1) m_PlantObjectSchemeIndex = asset.FindControlSchemeIndex("PlantObject");
+            return asset.controlSchemes[m_PlantObjectSchemeIndex];
+        }
+    }
     public interface IDefaultActions
     {
-        void OnPlant(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
 }
