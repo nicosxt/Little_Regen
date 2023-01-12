@@ -2,28 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour
-{
-    public GameObject pivot;
-    public GameObject currentObject;
+public class Block : MonoBehaviour {
+    public GameObject blockObject;
+    public GameObject containedObject;
+    public int indexX, indexZ;
+    public bool isHighlighted;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Initiate(int _x, int _z){
+        indexX = _x;
+        indexZ = _z;
     }
 
-    public void SpawnObject(PlantObject obj){
-        currentObject = Instantiate(obj.gameObject, pivot.transform.position, Quaternion.identity);
-    }
-
-    public void RemoveObject(){
-        Destroy(currentObject);
-        currentObject = null;
+    //highlightStatus: default, selected, error
+    public void SetHighlight(string highlightStatus){
+        if(highlightStatus == "default"){
+            blockObject.GetComponent<MeshRenderer>().material = BlockManager.s.defaultMaterial;
+            isHighlighted = false;
+        }else if(highlightStatus == "selected"){
+            blockObject.GetComponent<MeshRenderer>().material = BlockManager.s.hoverMaterial;
+            isHighlighted = true;
+        }else if(highlightStatus == "error"){
+            blockObject.GetComponent<MeshRenderer>().material = BlockManager.s.errorMaterial;
+            isHighlighted = true;
+        }
     }
 }

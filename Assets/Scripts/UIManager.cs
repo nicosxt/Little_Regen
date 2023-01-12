@@ -5,8 +5,20 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject[] plantObjectButtons;
-    public GameObject currentButton;
+    public static UIManager s;
+    void Awake() {
+        if (s != null && s != this) {
+            Destroy(this.gameObject);
+        } else {
+            s = this;
+        }
+    }
+
+    public GameObject objectButtonPrefab;
+    public GameObject objectButtonContainer;
+
+    public  GameObject categoryButtonPrefab;
+    public GameObject categoryButtonContainer;
 
     // Start is called before the first frame update
     void Start()
@@ -20,15 +32,4 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void SetActivePlantButton(string name){
-        if(currentButton)
-            currentButton.GetComponent<Image>().color = Color.black;
-            
-        foreach(GameObject obj in plantObjectButtons){
-            if(name == obj.name){
-                obj.GetComponent<Image>().color = Color.white;
-                currentButton = obj;
-            }
-        }
-    }
 }
