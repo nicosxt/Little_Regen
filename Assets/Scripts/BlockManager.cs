@@ -32,6 +32,7 @@ public class BlockManager : MonoBehaviour
     //Click On Blocks
     private InputActions inputActions;
     public Camera camera;
+    public float heightOffset = 0.12f;
 
 
     public static BlockManager s;
@@ -191,6 +192,7 @@ public class BlockManager : MonoBehaviour
                 blockMedianPosition += block.transform.position;
             }
             blockMedianPosition /= hoveredBlocks.Count;
+            blockMedianPosition.y += heightOffset;
             CategoryManager.s.currentCategory.SpawnObject(blockMedianPosition);
         }
     }
