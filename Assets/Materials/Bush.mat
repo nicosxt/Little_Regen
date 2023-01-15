@@ -7,15 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: window 1
+  m_Name: Bush
   m_Shader: {fileID: -6465566751694194690, guid: df5bb027d94a6c44bb32b3c31ec1303f, type: 3}
   m_ValidKeywords:
   - TCP2_OUTLINE_CONST_SIZE
   - TCP2_REFLECTIONS_FRESNEL
   - TCP2_RIM_LIGHTING_LIGHTMASK
   - TCP2_SHADOW_LIGHT_COLOR
-  - TCP2_SPECULAR
-  - TCP2_SPECULAR_CRISP
   - TCP2_UV2_AS_NORMALS
   - TCP2_UV_NORMALS_FULL
   m_InvalidKeywords:
@@ -206,7 +204,7 @@ Material:
     - _RampSmooth: 0.1
     - _RampSmoothing: 0
     - _RampSmoothingOtherLights: 0.5
-    - _RampThreshold: 0.651
+    - _RampThreshold: 0.731
     - _RampThresholdOtherLights: 0.5
     - _RampType: 0
     - _ReceiveShadows: 1
@@ -239,9 +237,9 @@ Material:
     - _SpecularMapType: 0
     - _SpecularRoughness: 0.555
     - _SpecularSmoothness: 0.2
-    - _SpecularToonSize: 0.06
+    - _SpecularToonSize: 0.25
     - _SpecularToonSmoothness: 0.05
-    - _SpecularType: 2
+    - _SpecularType: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _TexLod: 5
@@ -265,7 +263,7 @@ Material:
     - _UseRim: 0
     - _UseRimLightMask: 1
     - _UseShadowTexture: 0
-    - _UseSpecular: 1
+    - _UseSpecular: 0
     - _VertexColorsEnabled: 0
     - _ZSmooth: -0.5
     - _ZWrite: 1
@@ -274,7 +272,7 @@ Material:
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
-    - _BaseColor: {r: 0.14901958, g: 0.7058824, b: 0.7006959, a: 1}
+    - _BaseColor: {r: 0.26274508, g: 0.8862745, b: 0.6995365, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDim: {r: 0.017354928, g: 0.24528301, b: 0.14398165, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
@@ -284,16 +282,16 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
-    - _HColor: {r: 0.1462264, g: 0.788654, b: 1, a: 1}
+    - _HColor: {r: 1, g: 0.97725475, b: 0.2971698, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.46321175, g: 1, b: 0.43867922, a: 0.6}
-    - _SColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    - _SColor: {r: 0.19499996, g: 0.19499996, b: 0.19499996, a: 1}
     - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-    - _SpecularColor: {r: 0.2270826, g: 0.29755414, b: 0.5943396, a: 1}
+    - _SpecularColor: {r: 0.6732614, g: 0.8962264, b: 0.5284354, a: 1}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
 --- !u!114 &6123223120908263431
