@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8058158863329902192}
   - component: {fileID: 2977513587408316735}
   - component: {fileID: 5107185995560778248}
+  - component: {fileID: 1641106860537039731}
   m_Layer: 0
   m_Name: Tree (1)
   m_TagString: Untagged
@@ -84,6 +85,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1641106860537039731
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3020250779974322963}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.176246, y: 6.36447, z: 3.06872}
+  m_Center: {x: 0.0036647317, y: -0.13665937, z: 1.528701}
+--- !u!1 &4432053065597179882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4432053065597179883}
+  m_Layer: 0
+  m_Name: Pos (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4432053065597179883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4432053065597179882}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.35, y: 0, z: -0.36}
+  m_LocalScale: {x: 1.1533477, y: 1.1533473, z: 1.1533477}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8561396282499208637}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4499659176360676431
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8561396282499208637}
-  - component: {fileID: 1464521919}
+  - component: {fileID: 9048493915654272985}
   m_Layer: 0
   m_Name: Tree_TOON
   m_TagString: Untagged
@@ -109,15 +154,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4499659176360676431}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: -0.001, z: 6.7}
+  m_LocalPosition: {x: 14.67, y: -0.0014762878, z: 13.14}
   m_LocalScale: {x: 1.7159, y: 1.7159, z: 1.7159}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8058158863329902192}
+  - {fileID: 4432053065597179883}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1464521919
+--- !u!114 &9048493915654272985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,16 +172,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4499659176360676431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba8aacec52d04324a06880c1ea4130c, type: 3}
+  m_Script: {fileID: 11500000, guid: 253f77eb897194236b61b06c6e7471ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectCategory: {fileID: 0}
-  objectPrefab: {fileID: 0}
-  objectName: 
-  objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
-  currentState: default
-  UIButton: {fileID: 0}
-  button: {fileID: 0}
-  image: {fileID: 0}
-  text: {fileID: 0}
+  objectStatus: pending
+  originalMaterials: []
+  pendingMaterials: []
+  errorMaterials: []
+  objectMeshRenderer: {fileID: 0}
+  canPlace: 0
+  colliders: []
+  boundPosition: {fileID: 4432053065597179882}

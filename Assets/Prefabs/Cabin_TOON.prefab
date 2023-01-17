@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4576855709807293217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4576855709807293218}
+  m_Layer: 0
+  m_Name: Pos (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4576855709807293218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4576855709807293217}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.44, y: 0, z: -1.3}
+  m_LocalScale: {x: 1.9790292, y: 1.9790286, z: 1.9790292}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2076537896419416256}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6067791057465730508
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,6 +42,7 @@ GameObject:
   - component: {fileID: 6067791057465730505}
   - component: {fileID: 6067791057465730506}
   - component: {fileID: 6067791057465730507}
+  - component: {fileID: 484503600505010241}
   m_Layer: 0
   m_Name: House_Cabin1 (1)
   m_TagString: Untagged
@@ -25,14 +57,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6067791057465730508}
-  m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: 0.6532815, w: 0.27059805}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.3, y: 1.3308504, z: 1.1938167}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2076537896419416256}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 135}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!33 &6067791057465730506
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -83,6 +115,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &484503600505010241
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6067791057465730508}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2629662, y: 1.9287534, z: 2.0695164}
+  m_Center: {x: 0, y: -0.12546091, z: 1.0221905}
 --- !u!1 &6085322522349158706
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2076537896419416256}
-  - component: {fileID: 7638501589699434946}
+  - component: {fileID: -7384477846684253906}
   m_Layer: 0
   m_Name: Cabin_TOON
   m_TagString: Untagged
@@ -108,15 +153,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6085322522349158706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: -0.001, z: 9.858}
+  m_LocalPosition: {x: 16.36, y: -0.0014762878, z: 20.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6067791057465730505}
+  - {fileID: 4576855709807293218}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7638501589699434946
+--- !u!114 &-7384477846684253906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,16 +171,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6085322522349158706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba8aacec52d04324a06880c1ea4130c, type: 3}
+  m_Script: {fileID: 11500000, guid: 253f77eb897194236b61b06c6e7471ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectCategory: {fileID: 0}
-  objectPrefab: {fileID: 0}
-  objectName: 
-  objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
-  currentState: default
-  UIButton: {fileID: 0}
-  button: {fileID: 0}
-  image: {fileID: 0}
-  text: {fileID: 0}
+  objectStatus: pending
+  originalMaterials: []
+  pendingMaterials: []
+  errorMaterials: []
+  objectMeshRenderer: {fileID: 0}
+  canPlace: 0
+  colliders: []
+  boundPosition: {fileID: 4576855709807293217}

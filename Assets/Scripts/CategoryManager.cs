@@ -9,6 +9,11 @@ public class CategoryManager : MonoBehaviour
     public CategoryScript currentCategory;
     public List<CategoryScript> categoryScripts = new List<CategoryScript>();
 
+    //Object Related
+    public Material pendingMaterial;
+    public Material errorMaterial;
+    public GameObject objectContainer;
+
     public static CategoryManager s;
     void Awake() {
         if (s != null && s != this) {
