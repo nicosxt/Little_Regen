@@ -6,7 +6,6 @@ using TMPro;
 
 public class Manipulator : MonoBehaviour
 {
-
     public static Manipulator s;
     InputActions inputActions;
     void Awake() {
@@ -17,7 +16,7 @@ public class Manipulator : MonoBehaviour
         }
         inputActions = new InputActions();
     }
-    public GameObject marker;
+    //public GameObject marker;
     public Camera camera;
     public GameObject measureX, measureZ, textX, textZ, centerX, centerZ;
     public TextMeshPro measureXText, measureZText;
@@ -30,11 +29,13 @@ public class Manipulator : MonoBehaviour
     public bool isHoldingObject = false;
     public GameObject currentObject;
 
+    //Snap related
+    public float snapRange = 3f;
+
     // Start is called before the first frame update
     void Start()
     {
         inputActions.Default.Click.canceled += ClickOnGround;
-
     }
 
     void OnEnable() {
@@ -61,51 +62,69 @@ public class Manipulator : MonoBehaviour
         //Check if it's hitting on the Block Layer  (layer 8)
         if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
         {
-            //marker.SetActive(true);
-            measureX.SetActive(true);
-            measureZ.SetActive(true);
-            textZ.SetActive(true);
-            textX.SetActive(true);
             hoverPosition = hit.point;
-
-            //PrepareObject if haven't
+            
+            //PrepareObject
             if(!isHoldingObject){
-                //this function also passes value to currentObject
-                CategoryManager.s.currentCategory.PrepareObject(hoverPosition);
+                OnHoverStart(hoverPosition);
                 isHoldingObject = true;
-            }
-
-            if(currentObject != null){
+            }else{
                 //offset hoverPosition to currentObject
-                boundPosition = hoverPosition - currentObject.GetComponent<ObjectInstance>().boundOffset;
+                UpdateMeasurements(hoverPosition);
 
-                marker.transform.position = hit.point;
-                measureX.transform.position = new Vector3(hit.point.x, 0, 0);
-                measureZ.transform.position = new Vector3(0, 0, hit.point.z);
-                measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
-                measureX.transform.localScale = new Vector3(1, 1, boundPosition.z);
+                //if currentObject is next to an existing object of the same category, snap to it
+                if(currentObject.GetComponent<EnergyGeneratingObject>()){
+                    if(currentObject.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPosition)){
+                        //set currentObject's position to the snapped position
+                        currentObject.transform.position = currentObject.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
+                    }else{
+                        currentObject.transform.position = hoverPosition;
+                    }
+                }else{
+                    currentObject.transform.position = hoverPosition;
+                }
 
-                textX.transform.position = centerX.transform.position;
-                textZ.transform.position = centerZ.transform.position;
-                measureXText.SetText(boundPosition.x.ToString("0.00") + "m");
-                measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
 
-                currentObject.transform.position = hoverPosition;
+
             }
-
-
         }else{
-            //marker.SetActive(false);
-            measureX.SetActive(false);
-            measureZ.SetActive(false);
-            textZ.SetActive(false);
-            textX.SetActive(false);
-
-            if(isHoldingObject){
-                Destroy(currentObject);
-                isHoldingObject = false;
-            }
+            OnHoverEnd(hoverPosition);
         }
+    }
+
+    void OnHoverStart(Vector3 _pos){
+        measureX.SetActive(true);
+        measureZ.SetActive(true);
+        textZ.SetActive(true);
+        textX.SetActive(true);
+
+        //this function also passes value to currentObject
+        CategoryManager.s.currentCategory.PrepareObject(_pos);
+    }
+
+    void OnHoverEnd(Vector3 _pos){
+        measureX.SetActive(false);
+        measureZ.SetActive(false);
+        textZ.SetActive(false);
+        textX.SetActive(false);
+
+        if(isHoldingObject){
+            Destroy(currentObject);
+            isHoldingObject = false;
+        }
+    }
+
+    void UpdateMeasurements(Vector3 _pos){
+        boundPosition = _pos - currentObject.GetComponent<ObjectInstance>().boundOffset;
+        measureX.transform.position = new Vector3(_pos.x, 0, 0);
+        measureZ.transform.position = new Vector3(0, 0, _pos.z);
+        measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
+        measureX.transform.localScale = new Vector3(1, 1, boundPosition.z);
+
+        textX.transform.position = centerX.transform.position;
+        textZ.transform.position = centerZ.transform.position;
+        measureXText.SetText(boundPosition.x.ToString("0.00") + "m");
+        measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
     }
 
     void ClickOnGround(InputAction.CallbackContext context){

@@ -89,7 +89,8 @@ public class CategoryScript : MonoBehaviour
     public void PrepareObject(Vector3 _pos){
         //Quaternion _rot = Quaternion.identity;
         // _rot.eulerAngles = new Vector3(0, 45f, 0);
-        GameObject newObject = Instantiate(currentObjectScript.objectPrefab, _pos, Quaternion.identity, CategoryManager.s.objectContainer.transform);
+        GameObject newObject = Instantiate(currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
+
         Manipulator.s.currentObject = newObject;
     }
 

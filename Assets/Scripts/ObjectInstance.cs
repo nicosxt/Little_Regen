@@ -32,14 +32,14 @@ public class ObjectInstance : MonoBehaviour
         foreach(Material m in objectMeshRenderer.materials){
             Material newMat = new Material(m);
             originalMaterials.Add(newMat);
-            pendingMaterials.Add(CategoryManager.s.pendingMaterial);
-            errorMaterials.Add(CategoryManager.s.errorMaterial);
+            pendingMaterials.Add(ObjectManager.s.pendingMaterial);
+            errorMaterials.Add(ObjectManager.s.errorMaterial);
         }
 
         //set material
         SetMaterial("pending");
 
-        name += CategoryManager.s.objectContainer.transform.childCount.ToString();
+        name += ObjectManager.s.transform.childCount.ToString();
 
         //initiate colliders
         colliders = GetComponentsInChildren<Collider>();
@@ -52,11 +52,20 @@ public class ObjectInstance : MonoBehaviour
 
     //when object is clicked and actually placed to the scene
     public void PlaceObject(){
+        //Initiate utilities on this object
+        if(GetComponent<EnergyGeneratingObject>()){
+            GetComponent<EnergyGeneratingObject>().OnPlaceObject();
+        }
+
+
         objectStatus = "placed";
         SetMaterial("placed");
         foreach(Collider c in colliders){
             c.gameObject.GetComponent<ObjectInstanceCollider>().OnObjectPlaced();
         }
+
+        //add yourself to ObjectManager
+        ObjectManager.s.objects.Add(this.gameObject);
     }
 
     //set condition to see if object can be placed

@@ -9,11 +9,6 @@ public class CategoryManager : MonoBehaviour
     public CategoryScript currentCategory;
     public List<CategoryScript> categoryScripts = new List<CategoryScript>();
 
-    //Object Related
-    public Material pendingMaterial;
-    public Material errorMaterial;
-    public GameObject objectContainer;
-
     public static CategoryManager s;
     void Awake() {
         if (s != null && s != this) {
@@ -25,6 +20,7 @@ public class CategoryManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         //populate categoryScripts
         int count = 0;
         foreach(Transform child in transform){
@@ -34,7 +30,19 @@ public class CategoryManager : MonoBehaviour
         }
 
         SetCurrentCategory(categoryScripts[0].categoryName);
+
+        //initiate object scripts
+        ObjectManager.s.Initiate();
     }
+
+    // public void GenerateCategoriesInObjectContainer(){
+    //     foreach(Transform tr in transform){
+    //         GameObject newObject = new GameObject();
+    //         newObject.name = tr.name;
+    //         newObject.transform.parent = objectContainer.transform;
+
+    //     }
+    // }
 
     public void SetCurrentCategory(string name){
         foreach(CategoryScript ctg in categoryScripts){

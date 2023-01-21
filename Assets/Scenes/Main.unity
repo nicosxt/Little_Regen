@@ -171,7 +171,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 5487089970693648722, guid: 1202b70d295b643d2927db3525b63e85, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -225,7 +224,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 1082440121940979632, guid: 9a8debe855e644aa98caee36113ba113, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -279,7 +277,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 1980765468431871092, guid: d99eb8774c91d43ec8b536b97e9640e9, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -364,7 +361,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 6187099351646635936, guid: b8f8ef814836f471ab306ec24d08c844, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -479,7 +475,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 4436631972867953029, guid: b2341c2355a4f437aaca2679ce38a037, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -531,7 +526,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &529268368
 GameObject:
@@ -581,7 +576,59 @@ MonoBehaviour:
   objectPrefab: {fileID: 5252613613208710134, guid: a5249380652a949acb926b7cc155ac72, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
+  currentState: default
+  UIButton: {fileID: 0}
+  button: {fileID: 0}
+  image: {fileID: 0}
+  text: {fileID: 0}
+--- !u!1 &553263057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553263058}
+  - component: {fileID: 553263059}
+  m_Layer: 0
+  m_Name: Battery
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &553263058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553263057}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 715806036}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &553263059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553263057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba8aacec52d04324a06880c1ea4130c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectCategory: {fileID: 0}
+  objectPrefab: {fileID: 5444402026563491699, guid: 3a7ba8900475a411eb676a418d566673, type: 3}
+  objectName: 
+  objectIndex: 0
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -620,8 +667,9 @@ Transform:
   - {fileID: 2091470299}
   - {fileID: 1054505671}
   - {fileID: 2073969830}
+  - {fileID: 715806036}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &583364465
 MonoBehaviour:
@@ -637,9 +685,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentCategory: {fileID: 0}
   categoryScripts: []
-  pendingMaterial: {fileID: 2100000, guid: ebc28e3614a1647599916678feaa2903, type: 2}
-  errorMaterial: {fileID: 2100000, guid: 8620ad4b639fa4374b7e1267861ddf1b, type: 2}
-  objectContainer: {fileID: 1897880105}
 --- !u!1 &588499081
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,7 +780,7 @@ RectTransform:
   - {fileID: 3928414288854491460}
   - {fileID: 1561368249}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -835,7 +880,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 27.208, y: -35.926, z: 2.764}
 --- !u!114 &705507996
 MonoBehaviour:
@@ -889,6 +934,76 @@ Transform:
   m_Father: {fileID: 2112229927}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &715806035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 715806036}
+  - component: {fileID: 715806037}
+  - component: {fileID: 715806038}
+  m_Layer: 0
+  m_Name: Energy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &715806036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715806035}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1533511741}
+  - {fileID: 553263058}
+  m_Father: {fileID: 583364464}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &715806037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715806035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130f3473e6f6c4fa2b1b350a3a82c45c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  categoryIndex: 0
+  categoryName: 
+  currentState: default
+  UIButton: {fileID: 0}
+  button: {fileID: 0}
+  image: {fileID: 0}
+  text: {fileID: 0}
+  objectScripts: []
+  currentObjectScript: {fileID: 0}
+--- !u!114 &715806038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715806035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d639b41dc38c42d1889d5423d796d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalEnergy: 1
+  energyGeneratorContainerPrefab: {fileID: 4104475865867794515, guid: c1891d15212f9425e9438286c6f73ec7, type: 3}
 --- !u!4 &849832897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5baee3ad690ec400c8b7cdb6181a3e16, type: 3}
@@ -903,7 +1018,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f58c4aab46cef4c46bfd1515dcbcc588, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f58c4aab46cef4c46bfd1515dcbcc588, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1003,7 +1118,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 1858744494095709377, guid: 956b1d973dd5d4e2db9a3b9d014d1a9f, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -1322,7 +1436,7 @@ Transform:
   - {fileID: 1464521917}
   - {fileID: 1682223813}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1037345576
 PrefabInstance:
@@ -1489,7 +1603,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 6085322522349158706, guid: 19a55505b03f44f72b8595a478f280cc, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -1543,7 +1656,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 4499659176360676431, guid: 1128982c6a7784f0cbb631b9d3fe64ec, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -1611,6 +1723,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8561396282499208637, guid: 1128982c6a7784f0cbb631b9d3fe64ec, type: 3}
   m_PrefabInstance: {fileID: 1464521916}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1533511740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1533511741}
+  - component: {fileID: 1533511742}
+  m_Layer: 0
+  m_Name: Solar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1533511741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533511740}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 715806036}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1533511742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533511740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba8aacec52d04324a06880c1ea4130c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectCategory: {fileID: 0}
+  objectPrefab: {fileID: 2049895053434505599, guid: eec2404c8d2c744648191b205e368750, type: 3}
+  objectName: 
+  objectIndex: 0
+  currentState: default
+  UIButton: {fileID: 0}
+  button: {fileID: 0}
+  image: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &1556856366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1936,7 +2101,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 1524600716307032229, guid: b00bc33115632454886eea53fbf84252, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 2, z: 2}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -1990,7 +2154,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 1176914861131475698, guid: 09ea837cdc4504b1785a0e6d0fc3fdd6, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 4, y: 2, z: 3}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -2181,8 +2344,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1897880106}
+  - component: {fileID: 1897880107}
   m_Layer: 0
-  m_Name: __ObjectContainer__
+  m_Name: __ObjectManager__
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2201,8 +2365,23 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1897880107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897880105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fc76b9e2fb04d2ea5d9707e487ca33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pendingMaterial: {fileID: 2100000, guid: ebc28e3614a1647599916678feaa2903, type: 2}
+  errorMaterial: {fileID: 2100000, guid: 8620ad4b639fa4374b7e1267861ddf1b, type: 2}
+  objects: []
 --- !u!1 &1936957339
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,7 +2460,7 @@ Transform:
   - {fileID: 1951161502}
   - {fileID: 849832897}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1971997359
 GameObject:
@@ -2594,43 +2773,11 @@ MonoBehaviour:
   objectPrefab: {fileID: 6304793552231756125, guid: fcd785676a9eb403980b96f2330841ad, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 2, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
   image: {fileID: 0}
   text: {fileID: 0}
---- !u!1 &2031135531
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2031135532}
-  m_Layer: 0
-  m_Name: Pos (12)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2031135532
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031135531}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.149786, y: 4.0673366, z: 3.386971}
-  m_LocalScale: {x: 1.9790294, y: 1.9790283, z: 1.9790294}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2040926885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2853,7 +3000,6 @@ MonoBehaviour:
   objectPrefab: {fileID: 3122169399034603788, guid: 313d9aa1c544749dfa5ac2261264740b, type: 3}
   objectName: 
   objectIndex: 0
-  objectSize: {x: 1, y: 1, z: 1}
   currentState: default
   UIButton: {fileID: 0}
   button: {fileID: 0}
@@ -3093,7 +3239,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2118859101
 MonoBehaviour:

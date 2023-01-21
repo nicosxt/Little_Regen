@@ -107,8 +107,8 @@ public class BlockManager : MonoBehaviour
                 ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
 
                 hoveredBlock = hit.collider.transform.parent.GetComponent<Block>();
-                hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX + currentObjectScript.objectSize.x - 1);
-                hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ - currentObjectScript.objectSize.z + 1);
+                // hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX + currentObjectScript.objectSize.x - 1);
+                // hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ - currentObjectScript.objectSize.z + 1);
 
                 if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
                     isHoverWithinBoundry = false;
