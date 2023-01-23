@@ -12,7 +12,7 @@ public class ObjectInstance : MonoBehaviour
     public List<Material> errorMaterials = new List<Material>();
 
     //changing materials
-    public MeshRenderer objectMeshRenderer;
+    MeshRenderer[] objectMeshRenderers;
 
     public bool canPlace;
 
@@ -26,14 +26,16 @@ public class ObjectInstance : MonoBehaviour
     public void OnEnable(){
         canPlace = true;
 
-        objectMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        objectMeshRenderers = transform.GetComponentsInChildren<MeshRenderer>();
 
         //document original materials
-        foreach(Material m in objectMeshRenderer.materials){
-            Material newMat = new Material(m);
-            originalMaterials.Add(newMat);
-            pendingMaterials.Add(ObjectManager.s.pendingMaterial);
-            errorMaterials.Add(ObjectManager.s.errorMaterial);
+        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+            foreach(Material m in objectMeshRenderer.materials){
+                Material newMat = new Material(m);
+                originalMaterials.Add(newMat);
+                pendingMaterials.Add(ObjectManager.s.pendingMaterial);
+                errorMaterials.Add(ObjectManager.s.errorMaterial);
+            }
         }
 
         //set material
@@ -61,7 +63,7 @@ public class ObjectInstance : MonoBehaviour
         objectStatus = "placed";
         SetMaterial("placed");
         foreach(Collider c in colliders){
-            c.gameObject.GetComponent<ObjectInstanceCollider>().OnObjectPlaced();
+            c.gameObject.GetComponent<ObjectInstanceCollider>().OnPlaceObject();
         }
 
         //add yourself to ObjectManager
@@ -85,15 +87,18 @@ public class ObjectInstance : MonoBehaviour
 
     //set material 
     public void SetMaterial(string _status){
-        objectMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        
 
-        if(_status == "pending"){
-            objectMeshRenderer.materials = pendingMaterials.ToArray();
-        }else if(_status == "placed"){
-            objectMeshRenderer.materials = originalMaterials.ToArray();
-        }else if(_status == "error"){
-            objectMeshRenderer.materials = errorMaterials.ToArray();
+        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+            if(_status == "pending"){
+                objectMeshRenderer.materials = pendingMaterials.ToArray();
+            }else if(_status == "placed"){
+                objectMeshRenderer.materials = originalMaterials.ToArray();
+            }else if(_status == "error"){
+                objectMeshRenderer.materials = errorMaterials.ToArray();
+            }
         }
+
     }
 
     void InitiateColliders(){

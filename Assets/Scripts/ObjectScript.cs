@@ -22,6 +22,9 @@ public class ObjectScript : MonoBehaviour {
     public Image image;
     public Text text;
 
+    //Interaction Related
+    public bool isSnappable = false;
+
     public void Initiate(int _i, CategoryScript _ctg){
         objectCategory = _ctg;
         

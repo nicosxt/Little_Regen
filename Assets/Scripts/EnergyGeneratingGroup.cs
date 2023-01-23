@@ -12,7 +12,7 @@ public class EnergyGeneratingGroup : MonoBehaviour
 
     public float totalEnergy = 0;
     public Vector3 snapPosition;
-    public Vector3 positionOffset = new Vector3(2.2f, 0, 0);
+    public Vector3 positionOffset = new Vector3(0, 0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -24,8 +24,6 @@ public class EnergyGeneratingGroup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
         //updade indicator
         totalEnergy = 0;
         foreach(EnergyGeneratingObject obj in energyObjects){
@@ -37,6 +35,7 @@ public class EnergyGeneratingGroup : MonoBehaviour
     public void AddToEnergyGroup(EnergyGeneratingObject _obj){
         energyObjects.Add(_obj);
         snapPosition = _obj.transform.position;
+        positionOffset.x = _obj.GetComponent<ObjectInstance>().boundOffset.x * 2f;
         snapPosition += positionOffset;
     }
 }

@@ -27,7 +27,8 @@ public class Manipulator : MonoBehaviour
 
     //Object Related
     public bool isHoldingObject = false;
-    public GameObject currentObject;
+    public ObjectScript currentObjectScript;
+    public ObjectInstance currentObjectInstance;
 
     //Snap related
     public float snapRange = 3f;
@@ -69,19 +70,19 @@ public class Manipulator : MonoBehaviour
                 OnHoverStart(hoverPosition);
                 isHoldingObject = true;
             }else{
-                //offset hoverPosition to currentObject
+                //offset hoverPosition to currentObjectInstance
                 UpdateMeasurements(hoverPosition);
 
-                //if currentObject is next to an existing object of the same category, snap to it
-                if(currentObject.GetComponent<EnergyGeneratingObject>()){
-                    if(currentObject.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPosition)){
-                        //set currentObject's position to the snapped position
-                        currentObject.transform.position = currentObject.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
+                //if currentObjectInstance is next to an existing object of the same category, snap to it
+                if(currentObjectScript.isSnappable){
+                    if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPosition)){
+                        //set currentObjectInstance's position to the snapped position
+                        currentObjectInstance.transform.position = currentObjectInstance.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
                     }else{
-                        currentObject.transform.position = hoverPosition;
+                        currentObjectInstance.transform.position = hoverPosition;
                     }
                 }else{
-                    currentObject.transform.position = hoverPosition;
+                    currentObjectInstance.transform.position = hoverPosition;
                 }
 
 
@@ -98,7 +99,7 @@ public class Manipulator : MonoBehaviour
         textZ.SetActive(true);
         textX.SetActive(true);
 
-        //this function also passes value to currentObject
+        //this function also passes value to currentObjectInstance
         CategoryManager.s.currentCategory.PrepareObject(_pos);
     }
 
@@ -109,13 +110,14 @@ public class Manipulator : MonoBehaviour
         textX.SetActive(false);
 
         if(isHoldingObject){
-            Destroy(currentObject);
+            Destroy(currentObjectInstance.gameObject);
+            currentObjectInstance = null;
             isHoldingObject = false;
         }
     }
 
     void UpdateMeasurements(Vector3 _pos){
-        boundPosition = _pos - currentObject.GetComponent<ObjectInstance>().boundOffset;
+        boundPosition = _pos - currentObjectInstance.boundOffset;
         measureX.transform.position = new Vector3(_pos.x, 0, 0);
         measureZ.transform.position = new Vector3(0, 0, _pos.z);
         measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
@@ -128,12 +130,12 @@ public class Manipulator : MonoBehaviour
     }
 
     void ClickOnGround(InputAction.CallbackContext context){
-        if(!isHoldingObject || !currentObject.GetComponent<ObjectInstance>().canPlace)
+        if(!isHoldingObject || !currentObjectInstance.GetComponent<ObjectInstance>().canPlace)
             return;
 
         //Debug.Log("Clicking on block");
-        currentObject.GetComponent<ObjectInstance>().PlaceObject();
-        currentObject = null;
+        currentObjectInstance.PlaceObject();
+        currentObjectInstance = null;
         //place this object & spawn the next one
         CategoryManager.s.currentCategory.PrepareObject(hoverPosition);
         

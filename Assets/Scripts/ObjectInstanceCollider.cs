@@ -20,7 +20,7 @@ public class ObjectInstanceCollider : MonoBehaviour
         GetComponent<Collider>().isTrigger = true;
     }
     
-    public void OnObjectPlaced(){
+    public void OnPlaceObject(){
         GetComponent<Collider>().isTrigger = false;
     }
 
@@ -34,11 +34,10 @@ public class ObjectInstanceCollider : MonoBehaviour
             }
         }
 
-        Debug.Log("entering " + other.name);
+        //Debug.Log("entering " + other.name);
         if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
             //do not plant object if colliding with others
             objectInstance.SetPlacingCondition(false);
-
         }
     }
 

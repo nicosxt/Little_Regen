@@ -91,7 +91,8 @@ public class CategoryScript : MonoBehaviour
         // _rot.eulerAngles = new Vector3(0, 45f, 0);
         GameObject newObject = Instantiate(currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
 
-        Manipulator.s.currentObject = newObject;
+        Manipulator.s.currentObjectScript = currentObjectScript;
+        Manipulator.s.currentObjectInstance = newObject.GetComponent<ObjectInstance>();
     }
 
 
