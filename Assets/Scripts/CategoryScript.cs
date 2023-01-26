@@ -18,7 +18,6 @@ public class CategoryScript : MonoBehaviour
 
     //Objects of this category
     public List<ObjectScript> objectScripts = new List<ObjectScript>();
-    public ObjectScript currentObjectScript;
 
     public void Initiate(int _i){
         categoryIndex = _i;
@@ -79,7 +78,7 @@ public class CategoryScript : MonoBehaviour
         foreach(ObjectScript obj in objectScripts){
             if(obj.name == name){
                 obj.SetState("selected");
-                currentObjectScript = obj;
+                ObjectManager.s.currentObjectScript = obj;
             }else{
                 obj.SetState("default");
             }
@@ -89,10 +88,9 @@ public class CategoryScript : MonoBehaviour
     public void PrepareObject(Vector3 _pos){
         //Quaternion _rot = Quaternion.identity;
         // _rot.eulerAngles = new Vector3(0, 45f, 0);
-        GameObject newObject = Instantiate(currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
+        GameObject newObject = Instantiate(ObjectManager.s.currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
 
-        Manipulator.s.currentObjectScript = currentObjectScript;
-        Manipulator.s.currentObjectInstance = newObject.GetComponent<ObjectInstance>();
+        ObjectManager.s.currentObjectInstance = newObject.GetComponent<ObjectInstance>();
     }
 
 

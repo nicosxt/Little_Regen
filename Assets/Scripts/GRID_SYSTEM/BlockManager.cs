@@ -30,7 +30,7 @@ public class BlockManager : MonoBehaviour
     public List<Block> hoveredBlocks = new List<Block>();
 
     //Click On Blocks
-    private InputActions inputActions;
+    // private InputActions inputActions;
     public Camera camera;
     public float heightOffset = 0.12f;
 
@@ -42,16 +42,16 @@ public class BlockManager : MonoBehaviour
         } else {
             s = this;
         }
-        inputActions = new InputActions();
+        // inputActions = new InputActions();
     }
 
-    void OnEnable() {
-        inputActions.Enable();
-    }
+    // void OnEnable() {
+    //     inputActions.Enable();
+    // }
 
-    void OnDisable() {
-        inputActions.Disable();
-    }
+    // void OnDisable() {
+    //     inputActions.Disable();
+    // }
 
     // Start is called before the first frame update
     void Start()
@@ -64,13 +64,13 @@ public class BlockManager : MonoBehaviour
 
         InstantiateBlocks();
         camera.orthographicSize = landWidth * 0.36f;
-        inputActions.Default.Click.canceled += ClickOnBlock;
+        // inputActions.Default.Click.canceled += ClickOnBlock;
     }
 
     // Update is called once per frame
     void Update()
     {
-        HoverOnBlock();
+        //HoverOnBlock();
     }
 
     void InstantiateBlocks(){
@@ -92,64 +92,51 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-    void HoverOnBlock(){
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+    public void HoverOnBlocks(Collider _blockCollider){
+        hoveredBlock = _blockCollider.transform.parent.GetComponent<Block>();
+        hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX +  ObjectManager.s.currentObjectScript.objectSize.x - 1);
+        hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ -  ObjectManager.s.currentObjectScript.objectSize.z + 1);
 
-        Ray ray = new Ray(worldPos, camera.transform.forward);
-        RaycastHit hit;
-        //Check if it's hitting on the Block Layer  (layer 8)
-        if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
-        {
-            //if it's hitting on a block, get index of the block
-            if(hit.collider.transform.parent.GetComponent<Block>()){
-
-                ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
-
-                hoveredBlock = hit.collider.transform.parent.GetComponent<Block>();
-                // hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX + currentObjectScript.objectSize.x - 1);
-                // hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ - currentObjectScript.objectSize.z + 1);
-
-                if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
-                    isHoverWithinBoundry = false;
-                }else{
-                    isHoverWithinBoundry = true;
-                }
-
-                //Check who is in hoveredBlocks
-                foreach (Block block in blocks)
-                {
-                    if(CheckIfBlockIsWithinIndexRange(block, hoveredBlockRangeX, hoveredBlockRangeZ)){
-                        if(!hoveredBlocks.Contains(block)){
-                            hoveredBlocks.Add(block);
-                        }
-                    }else{
-                        //block.SetHighlight("none");
-                        block.SetHighlight("default");
-                        if(hoveredBlocks.Contains(block)){
-                            hoveredBlocks.Remove(block);
-                            
-                        }
-                    }
-                }
-                
-
-                foreach (Block block in hoveredBlocks)
-                {
-                    block.SetHighlight((CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry) ? "selected" : "error");
-                }
-
-
-            }else{
-                ResetBlocksOnHoverNone();
-            }
+        if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
+            isHoverWithinBoundry = false;
         }else{
-            ResetBlocksOnHoverNone();
+            isHoverWithinBoundry = true;
         }
-        
+
+        //Check who is in hoveredBlocks
+        foreach (Block block in blocks)
+        {
+            if(CheckIfBlockIsWithinIndexRange(block, hoveredBlockRangeX, hoveredBlockRangeZ)){
+                if(!hoveredBlocks.Contains(block)){
+                    hoveredBlocks.Add(block);
+                }
+            }else{
+                //block.SetHighlight("none");
+                block.SetHighlight("default");
+                if(hoveredBlocks.Contains(block)){
+                    hoveredBlocks.Remove(block);
+                    
+                }
+            }
+        }
+
     }
 
-    void ResetBlocksOnHoverNone(){
+    public Vector3 GetBlockMedianPosition(){
+        float x = 0;
+        float z = 0;
+        foreach (Block block in hoveredBlocks)
+        {
+            x += block.transform.position.x;
+            z += block.transform.position.z;
+        }
+        x /= hoveredBlocks.Count;
+        z /= hoveredBlocks.Count;
+        return new Vector3(x, 0, z);
+    }
+
+
+    public void ResetBlocksOnHoverNone(){
         hoveredBlock = null;
         hoveredBlocks.Clear();
         hoveredBlockRangeX = hoveredBlockRangeZ = Vector2.zero;
@@ -167,33 +154,102 @@ public class BlockManager : MonoBehaviour
         return false;
     }
 
-    bool CheckIfBlocksAreEmpty(List<Block> _blocks){
-        foreach(Block block in _blocks){
+    public bool CheckIfCanPlaceObject(){
+        bool isBlockEmpty = true;
+        foreach(Block block in hoveredBlocks){
             if(block.containedObject){
-                return false;
+                isBlockEmpty = false;
             }
         }
-        return true;
+        bool canPlace = isBlockEmpty && isHoverWithinBoundry;
+        foreach(Block block in hoveredBlocks){
+            block.SetHighlight(canPlace ? "selected" : "error");
+        }
+        return canPlace;
     }
 
-    void ClickOnBlock(InputAction.CallbackContext context){
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+    // void HoverOnBlock(){
+    //     Vector2 mousePos = Mouse.current.position.ReadValue();
+    //     Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
 
-        //Debug.Log("Clicking on block");
+    //     Ray ray = new Ray(worldPos, camera.transform.forward);
+    //     RaycastHit hit;
+    //     //Check if it's hitting on the Block Layer  (layer 8)
+    //     if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
+    //     {
+    //         //if it's hitting on a block, get index of the block
+    //         if(hit.collider.transform.parent.GetComponent<Block>()){
+    //             hoveredBlock = hit.collider.transform.parent.GetComponent<Block>();
+    //             ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
 
-        if(hoveredBlocks.Count > 0 && CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry){
+                
+    //             hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX + currentObjectScript.objectSize.x - 1);
+    //             hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ - currentObjectScript.objectSize.z + 1);
 
-            //check if all blocks are empty
-            blockMedianPosition = Vector3.zero;
-            ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
-            foreach(Block block in hoveredBlocks){
-                block.containedObject = currentObjectScript.gameObject;
-                blockMedianPosition += block.transform.position;
-            }
-            blockMedianPosition /= hoveredBlocks.Count;
-            blockMedianPosition.y += heightOffset;
-            CategoryManager.s.currentCategory.PrepareObject(blockMedianPosition);
+    //             if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
+    //                 isHoverWithinBoundry = false;
+    //             }else{
+    //                 isHoverWithinBoundry = true;
+    //             }
+
+    //             //Check who is in hoveredBlocks
+    //             foreach (Block block in blocks)
+    //             {
+    //                 if(CheckIfBlockIsWithinIndexRange(block, hoveredBlockRangeX, hoveredBlockRangeZ)){
+    //                     if(!hoveredBlocks.Contains(block)){
+    //                         hoveredBlocks.Add(block);
+    //                     }
+    //                 }else{
+    //                     //block.SetHighlight("none");
+    //                     block.SetHighlight("default");
+    //                     if(hoveredBlocks.Contains(block)){
+    //                         hoveredBlocks.Remove(block);
+                            
+    //                     }
+    //                 }
+    //             }
+                
+
+    //             foreach (Block block in hoveredBlocks)
+    //             {
+    //                 block.SetHighlight((CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry) ? "selected" : "error");
+    //             }
+
+
+    //         }else{
+    //             ResetBlocksOnHoverNone();
+    //         }
+    //     }else{
+    //         ResetBlocksOnHoverNone();
+    //     }
+        
+    // }
+
+
+    // void ClickOnBlock(InputAction.CallbackContext context){
+    //     Vector2 mousePos = Mouse.current.position.ReadValue();
+    //     Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+
+    //     //Debug.Log("Clicking on block");
+
+    //     if(hoveredBlocks.Count > 0 && CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry){
+
+    //         //check if all blocks are empty
+    //         blockMedianPosition = Vector3.zero;
+    //         ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
+    //         foreach(Block block in hoveredBlocks){
+    //             block.containedObject = currentObjectScript.gameObject;
+    //             blockMedianPosition += block.transform.position;
+    //         }
+    //         blockMedianPosition /= hoveredBlocks.Count;
+    //         blockMedianPosition.y += heightOffset;
+    //         CategoryManager.s.currentCategory.PrepareObject(blockMedianPosition);
+    //     }
+    // }
+
+    public void OnPlaceObject(){
+        foreach(Block block in hoveredBlocks){
+            block.containedObject = ObjectManager.s.currentObjectScript.gameObject;
         }
     }
 }

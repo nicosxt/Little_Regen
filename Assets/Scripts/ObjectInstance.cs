@@ -1,22 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ObjectInstance : MonoBehaviour
 {
 
     //pending, placed
     public string objectStatus = "pending";
-    public List<Material> originalMaterials = new List<Material>();
-    public List<Material> pendingMaterials = new List<Material>();
-    public List<Material> errorMaterials = new List<Material>();
+
 
     //changing materials
-    MeshRenderer[] objectMeshRenderers;
+    public MeshRenderer[] objectMeshRenderers;
+
+    public List<RendererMaterialPair> rendererMaterialPairs = new List<RendererMaterialPair>();
 
     public bool canPlace;
 
     //all colliders
+    public bool useColliders = false;
     public Collider[] colliders;
 
     public GameObject boundPosition;
@@ -28,14 +31,19 @@ public class ObjectInstance : MonoBehaviour
 
         objectMeshRenderers = transform.GetComponentsInChildren<MeshRenderer>();
 
+        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+            if(objectMeshRenderer.GetComponent<TextMeshPro>()){
+                //remove objectMeshRenderer if it is TextMeshPro
+                List<MeshRenderer> temp = new List<MeshRenderer>(objectMeshRenderers);
+                temp.Remove(objectMeshRenderer);
+                objectMeshRenderers = temp.ToArray();
+            }
+        }
+
         //document original materials
         foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
-            foreach(Material m in objectMeshRenderer.materials){
-                Material newMat = new Material(m);
-                originalMaterials.Add(newMat);
-                pendingMaterials.Add(ObjectManager.s.pendingMaterial);
-                errorMaterials.Add(ObjectManager.s.errorMaterial);
-            }
+            rendererMaterialPairs.Add(new RendererMaterialPair(objectMeshRenderer));
+            
         }
 
         //set material
@@ -44,10 +52,13 @@ public class ObjectInstance : MonoBehaviour
         name += ObjectManager.s.transform.childCount.ToString();
 
         //initiate colliders
-        colliders = GetComponentsInChildren<Collider>();
-        InitiateColliders();
+        if(useColliders){
+            colliders = GetComponentsInChildren<Collider>();
+            InitiateColliders();
+        }
 
-        boundOffset = new Vector3(transform.position.x - boundPosition.transform.position.x, 0, transform.position.z - boundPosition.transform.position.z);
+
+        // boundOffset = new Vector3(transform.position.x - boundPosition.transform.position.x, 0, transform.position.z - boundPosition.transform.position.z);
 
 
     }
@@ -56,15 +67,19 @@ public class ObjectInstance : MonoBehaviour
     public void PlaceObject(){
         //Initiate utilities on this object
         if(GetComponent<EnergyGeneratingObject>()){
-            GetComponent<EnergyGeneratingObject>().OnPlaceObject();
+            GetComponent<EnergyGeneratingObject>().OnPlaceEnergyGeneratingObject();
         }
 
 
         objectStatus = "placed";
         SetMaterial("placed");
-        foreach(Collider c in colliders){
-            c.gameObject.GetComponent<ObjectInstanceCollider>().OnPlaceObject();
+
+        if(useColliders){
+            foreach(Collider c in colliders){
+                c.gameObject.GetComponent<ObjectInstanceCollider>().OnPlaceObject();
+          }
         }
+
 
         //add yourself to ObjectManager
         ObjectManager.s.objects.Add(this.gameObject);
@@ -87,15 +102,15 @@ public class ObjectInstance : MonoBehaviour
 
     //set material 
     public void SetMaterial(string _status){
-        
 
-        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+        foreach(RendererMaterialPair rmPair in rendererMaterialPairs){
+
             if(_status == "pending"){
-                objectMeshRenderer.materials = pendingMaterials.ToArray();
+                rmPair.renderer.materials = rmPair.pendingMaterials;
             }else if(_status == "placed"){
-                objectMeshRenderer.materials = originalMaterials.ToArray();
+                rmPair.renderer.materials = rmPair.materials;
             }else if(_status == "error"){
-                objectMeshRenderer.materials = errorMaterials.ToArray();
+                rmPair.renderer.materials = rmPair.errorMaterials;
             }
         }
 
@@ -108,4 +123,32 @@ public class ObjectInstance : MonoBehaviour
         }
     }
 
+}
+
+[Serializable]
+public class RendererMaterialPair{
+    public MeshRenderer renderer;
+    public Material[] materials;
+    public Material[] pendingMaterials;
+    public Material[] errorMaterials;
+
+    public RendererMaterialPair(MeshRenderer _renderer){
+
+        List<Material> pendingMaterialsList = new List<Material>();
+        List<Material> errorMaterialsList = new List<Material>();
+        
+        this.renderer = _renderer;
+        this.materials = _renderer.materials;
+
+        foreach(Material m in this.materials){
+            Material newPendingMat = new Material(ObjectManager.s.pendingMaterial);
+            Material newErrorMat = new Material(ObjectManager.s.errorMaterial);
+            pendingMaterialsList.Add(newPendingMat);
+            errorMaterialsList.Add(newErrorMat);
+        }
+
+        this.pendingMaterials = pendingMaterialsList.ToArray();
+        this.errorMaterials = errorMaterialsList.ToArray();
+
+    }
 }

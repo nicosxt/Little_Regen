@@ -17,10 +17,10 @@ public class EnergyManager : MonoBehaviour
     public float totalEnergy = 1;
 
     //container prefabs
-    public GameObject energyGeneratorContainerPrefab;
+    //public GameObject energyGeneratorContainerPrefab;
 
 
-    public List<EnergyGeneratingGroup> energyGeneratingGroups = new List<EnergyGeneratingGroup>();
+    // public List<EnergyGeneratingGroup> energyGeneratingGroups = new List<EnergyGeneratingGroup>();
 
     public List<EnergyGeneratingObject> energyGeneratingObjects = new List<EnergyGeneratingObject>();
 

@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3208637206063593335}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 1.43}
+  m_LocalPosition: {x: 0, y: 0, z: 2.59}
   m_LocalScale: {x: 0.27522, y: 0.27522, z: 0.27522}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,6 +223,8 @@ MonoBehaviour:
   indicatingString: 'Generating: '
   energyObjects: []
   totalEnergy: 0
+  snapPosition: {x: 0, y: 0, z: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &4275516311426434983
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4275516311426434983}
   m_LocalRotation: {x: -0.4999127, y: -0.50008726, z: -0.4999127, w: 0.50008726}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

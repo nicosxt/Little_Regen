@@ -19,6 +19,10 @@ public class ObjectManager : MonoBehaviour
 
     public List<GameObject> objects = new List<GameObject>();
 
+    //Current
+    public ObjectScript currentObjectScript;
+    public ObjectInstance currentObjectInstance;
+
     public void Initiate(){
         // foreach(CategoryScript cs in CategoryManager.s.categoryScripts){
         //     GameObject newObject = new GameObject();

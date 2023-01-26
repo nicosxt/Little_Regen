@@ -22,13 +22,10 @@ public class Manipulator : MonoBehaviour
     public TextMeshPro measureXText, measureZText;
     //public float heightOffset = 0.12f;
 
-    public Vector3 hoverPosition, boundPosition;
-
+    public Vector3 hoverPositionRaw, hoverPositionObject, boundPosition;
 
     //Object Related
     public bool isHoldingObject = false;
-    public ObjectScript currentObjectScript;
-    public ObjectInstance currentObjectInstance;
 
     //Snap related
     public float snapRange = 3f;
@@ -60,64 +57,73 @@ public class Manipulator : MonoBehaviour
 
         Ray ray = new Ray(worldPos, camera.transform.forward);
         RaycastHit hit;
+
         //Check if it's hitting on the Block Layer  (layer 8)
         if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
         {
-            hoverPosition = hit.point;
+
+            //check with blocks
+            BlockManager.s.HoverOnBlocks(hit.collider);
+
+            hoverPositionRaw = hit.point;
+            hoverPositionObject = BlockManager.s.GetBlockMedianPosition();
             
-            //PrepareObject
             if(!isHoldingObject){
-                OnHoverStart(hoverPosition);
+                OnHoverStart(hoverPositionObject);
                 isHoldingObject = true;
             }else{
                 //offset hoverPosition to currentObjectInstance
-                UpdateMeasurements(hoverPosition);
+                //UpdateMeasurements(hoverPosition);
 
                 //if currentObjectInstance is next to an existing object of the same category, snap to it
-                if(currentObjectScript.isSnappable){
-                    if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPosition)){
-                        //set currentObjectInstance's position to the snapped position
-                        currentObjectInstance.transform.position = currentObjectInstance.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
-                    }else{
-                        currentObjectInstance.transform.position = hoverPosition;
-                    }
-                }else{
-                    currentObjectInstance.transform.position = hoverPosition;
-                }
+                // if(ObjectManager.s.currentObjectScript.isSnappable){
+                //     if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPositionObject)){
+                //         //set currentObjectInstance's position to the snapped position
+                //         currentObjectInstance.transform.position = currentObjectInstance.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
+                //     }else{
+                //         ObjectManager.s.currentObjectInstance.transform.position = hoverPositionObject;
+                //     }
+                // }else{
+                //     currentObjectInstance.transform.position = hoverPositionObject;
+                // }
 
+                ObjectManager.s.currentObjectInstance.transform.position = hoverPositionObject;
 
+                //check if blocks are empty + within boundry
+                ObjectManager.s.currentObjectInstance.SetPlacingCondition(BlockManager.s.CheckIfCanPlaceObject());
 
             }
         }else{
-            OnHoverEnd(hoverPosition);
+            BlockManager.s.ResetBlocksOnHoverNone();
+            OnHoverEnd();
         }
     }
 
     void OnHoverStart(Vector3 _pos){
-        measureX.SetActive(true);
-        measureZ.SetActive(true);
-        textZ.SetActive(true);
-        textX.SetActive(true);
+        // measureX.SetActive(true);
+        // measureZ.SetActive(true);
+        // textZ.SetActive(true);
+        // textX.SetActive(true);
 
         //this function also passes value to currentObjectInstance
         CategoryManager.s.currentCategory.PrepareObject(_pos);
     }
 
-    void OnHoverEnd(Vector3 _pos){
-        measureX.SetActive(false);
-        measureZ.SetActive(false);
-        textZ.SetActive(false);
-        textX.SetActive(false);
+    void OnHoverEnd(){
+        // measureX.SetActive(false);
+        // measureZ.SetActive(false);
+        // textZ.SetActive(false);
+        // textX.SetActive(false);
 
         if(isHoldingObject){
-            Destroy(currentObjectInstance.gameObject);
-            currentObjectInstance = null;
+            Destroy(ObjectManager.s.currentObjectInstance.gameObject);
+            ObjectManager.s.currentObjectInstance = null;
             isHoldingObject = false;
         }
     }
 
     void UpdateMeasurements(Vector3 _pos){
-        boundPosition = _pos - currentObjectInstance.boundOffset;
+        boundPosition = _pos - ObjectManager.s.currentObjectInstance.boundOffset;
         measureX.transform.position = new Vector3(_pos.x, 0, 0);
         measureZ.transform.position = new Vector3(0, 0, _pos.z);
         measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
@@ -130,14 +136,16 @@ public class Manipulator : MonoBehaviour
     }
 
     void ClickOnGround(InputAction.CallbackContext context){
-        if(!isHoldingObject || !currentObjectInstance.GetComponent<ObjectInstance>().canPlace)
+        if(!isHoldingObject || !ObjectManager.s.currentObjectInstance.GetComponent<ObjectInstance>().canPlace)
             return;
 
         //Debug.Log("Clicking on block");
-        currentObjectInstance.PlaceObject();
-        currentObjectInstance = null;
+        ObjectManager.s.currentObjectInstance.PlaceObject();
+        ObjectManager.s.currentObjectInstance = null;
+        BlockManager.s.OnPlaceObject();
+
         //place this object & spawn the next one
-        CategoryManager.s.currentCategory.PrepareObject(hoverPosition);
+        CategoryManager.s.currentCategory.PrepareObject(hoverPositionObject);
         
     }
 }

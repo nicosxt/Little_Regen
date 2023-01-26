@@ -12,7 +12,7 @@ public class ObjectScript : MonoBehaviour {
     public string objectName;
     public int objectIndex;
     //how much grid this object takes
-    // public Vector3 objectSize = new Vector3(1,1,1);
+    public Vector3 objectSize = new Vector3(1,1,1);
 
     //UI Button Related
     //default, selected, hover
