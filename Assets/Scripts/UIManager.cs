@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,6 +21,12 @@ public class UIManager : MonoBehaviour
     public  GameObject categoryButtonPrefab;
     public GameObject categoryButtonContainer;
 
+    public GameObject menuContainer;
+
+    public string currentMode = "Place";
+
+    public Text totalEnergyGeneratingText, totalEnergyUsingText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +37,13 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetCurrentMode(GameObject g){
+        currentMode = g.name;
+        foreach(Transform t in menuContainer.transform){
+            t.gameObject.SetActive(t.name == currentMode);
+        }
     }
 
 }

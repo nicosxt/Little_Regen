@@ -14,17 +14,15 @@ public class EnergyManager : MonoBehaviour
         }
     }
 
-    public float totalEnergy = 1;
+    public float totalPowerGenerating = 0;
+    public float totalPowerUsage = 0;
 
-    //container prefabs
-    //public GameObject energyGeneratorContainerPrefab;
-
-
-    // public List<EnergyGeneratingGroup> energyGeneratingGroups = new List<EnergyGeneratingGroup>();
 
     public List<EnergyGeneratingObject> energyGeneratingObjects = new List<EnergyGeneratingObject>();
+    public List<EnergyObject> energyObjects = new List<EnergyObject>();
 
-    // public List<EnergyStoringObject> EnergyStoringObjects = new List<EnergyStoringObject>();
+    public GameObject chargeIndicatorPrefab;
+
     
     // Start is called before the first frame update
     void Start()
@@ -32,16 +30,21 @@ public class EnergyManager : MonoBehaviour
         
     }
 
-    // public void AddEnergyGeneratingObject(EnergyGeneratingObject obj){
-    //     EnergyGeneratingObjects.Add(obj);
-    // }
-
     // Update is called once per frame
     void Update()
     {
-        // totalEnergy = 0;
-        // foreach(EnergyGeneratingObject obj in EnergyGeneratingObjects){
-        //     totalEnergy += obj.currentEnergy;
-        // }
+        totalPowerGenerating = 0;
+        foreach(EnergyGeneratingObject obj in energyGeneratingObjects){
+            totalPowerGenerating += obj.currentPowerOutput;
+        }
+
+        totalPowerUsage = 0;
+        foreach(EnergyObject obj in energyObjects){
+            totalPowerUsage += obj.currentPowerUsage;
+        }
+
+        UIManager.s.totalEnergyGeneratingText.text = totalPowerGenerating.ToString("0.00") + " kW";
+        UIManager.s.totalEnergyUsingText.text = totalPowerUsage.ToString("0.00") + "kW";
+        
     }
 }

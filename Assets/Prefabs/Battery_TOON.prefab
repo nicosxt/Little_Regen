@@ -47,11 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectStatus: pending
-  originalMaterials: []
-  pendingMaterials: []
-  errorMaterials: []
-  objectMeshRenderer: {fileID: 0}
+  objectMeshRenderers: []
+  rendererMaterialPairs: []
   canPlace: 0
+  useColliders: 0
   colliders: []
   boundPosition: {fileID: 0}
   boundOffset: {x: 0, y: 0, z: 0}
@@ -67,9 +66,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f8730a4704c44a5aedf64af48ae2e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalEnergyCapacity: 1
-  currentEnergy: 0
-  storingSpeed: 0.1
+  name: 
+  powerUsage: 1
+  currentPowerUsage: 0
+  isOn: 0
+  chargeIndicator: {fileID: 0}
 --- !u!1 &5444402027700462124
 GameObject:
   m_ObjectHideFlags: 0

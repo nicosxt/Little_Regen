@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1120473727051286561}
   - component: {fileID: 1120473727051286563}
   - component: {fileID: 1120473727051286560}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fridge_Door_Bottom (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,10 +25,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120473727051286622}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -1.1324, y: 1.7145002, z: -0.51207}
-  m_LocalScale: {x: 1.1856, y: 1.1856, z: 1.1697012}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0.56620026, y: 0.8572501, z: -0.25603485}
+  m_LocalScale: {x: 0.5928, y: 0.5928, z: 0.5848506}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1120473727143445933}
   m_RootOrder: 1
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1120473727059973756}
   - component: {fileID: 1120473727059973758}
   - component: {fileID: 1120473727059973759}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fridge_Body (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,10 +109,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120473727059973757}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0.06242, y: 0.090170205, z: 0.058462}
-  m_LocalScale: {x: 1.1856, y: 1.1856, z: 1.1856}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0.031209946, y: 0.045085102, z: 0.029231071}
+  m_LocalScale: {x: 0.5928, y: 0.5928, z: 0.5928}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1120473727143445933}
   m_RootOrder: 2
@@ -179,7 +179,8 @@ GameObject:
   - component: {fileID: 1120473727143445933}
   - component: {fileID: 1120473727143445932}
   - component: {fileID: 6826328470673042981}
-  m_Layer: 0
+  - component: {fileID: 8581973888120589428}
+  m_Layer: 7
   m_Name: Fridge_TOON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,8 +195,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120473727143445930}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -0.103}
-  m_LocalScale: {x: 0.56141496, y: 0.56141496, z: 0.56141496}
+  m_LocalPosition: {x: 9.018509, y: 0, z: 8.762671}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1120473727297785815}
@@ -215,8 +216,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 4, z: 2}
-  m_Center: {x: -0, y: 2.0447938, z: -0}
+  m_Size: {x: 2.4228945, y: 4.800484, z: 2.1812396}
+  m_Center: {x: 0.075516775, y: 2.445036, z: 0.16613795}
 --- !u!114 &6826328470673042981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,6 +238,23 @@ MonoBehaviour:
   colliders: []
   boundPosition: {fileID: 0}
   boundOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &8581973888120589428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120473727143445930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fefa7dd4203b4643bbbcb7edb5c639c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  powerUsage: 1
+  currentPowerUsage: 0
+  isOn: 0
+  chargeIndicator: {fileID: 0}
 --- !u!1 &1120473727297785812
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +266,7 @@ GameObject:
   - component: {fileID: 1120473727297785815}
   - component: {fileID: 1120473727297785817}
   - component: {fileID: 1120473727297785814}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fridge_Door (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,10 +280,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120473727297785812}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -1.1324, y: 3.73, z: -0.51207}
-  m_LocalScale: {x: 1.1856, y: 1.1856, z: 1.1305054}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0.56620026, y: 1.865, z: -0.25603485}
+  m_LocalScale: {x: 0.5928, y: 0.5928, z: 0.5652527}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1120473727143445933}
   m_RootOrder: 0

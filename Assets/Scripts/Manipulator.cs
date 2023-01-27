@@ -22,7 +22,7 @@ public class Manipulator : MonoBehaviour
     public TextMeshPro measureXText, measureZText;
     //public float heightOffset = 0.12f;
 
-    public Vector3 hoverPositionRaw, hoverPositionObject, boundPosition;
+    public Vector3 hoverPositionOnBlocks, boundPosition;
 
     //Object Related
     public bool isHoldingObject = false;
@@ -30,10 +30,16 @@ public class Manipulator : MonoBehaviour
     //Snap related
     public float snapRange = 3f;
 
+    //Hover related
+    public GameObject hoveringObject;
+    public Vector3 hoveringPosition;
+    Vector2 mousePos;
+    Vector3 worldPos;
+
     // Start is called before the first frame update
     void Start()
     {
-        inputActions.Default.Click.canceled += ClickOnGround;
+        inputActions.Default.Click.canceled += OnClick;
     }
 
     void OnEnable() {
@@ -47,17 +53,43 @@ public class Manipulator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HoverOnGround();
+
+        //Hovering
+        mousePos = Mouse.current.position.ReadValue();
+        worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+
+        
+
+        if(UIManager.s.currentMode == "Place"){
+            HoverOnGround();
+        }else if(UIManager.s.currentMode == "Use"){
+            HoverOnObjects();
+        }
+        
+    }
+
+    void HoverOnObjects(){
+        Ray ray = new Ray(worldPos, camera.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 1000f, 1 << 7))
+        {
+            //hoveringObject = hit.collider;
+            //Debug.Log(hit.collider.name);
+
+            if(hit.collider.GetComponent<EnergyObject>()){
+                hoveringObject = hit.collider.gameObject;
+            }else if (hit.collider.GetComponentInParent<EnergyObject>()){
+                hoveringObject = hit.collider.transform.parent.gameObject;
+            }
+        }else{
+            hoveringObject = null;
+        }
+
     }
 
     void HoverOnGround(){
-        //Hovering
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
-
         Ray ray = new Ray(worldPos, camera.transform.forward);
         RaycastHit hit;
-
         //Check if it's hitting on the Block Layer  (layer 8)
         if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
         {
@@ -65,11 +97,11 @@ public class Manipulator : MonoBehaviour
             //check with blocks
             BlockManager.s.HoverOnBlocks(hit.collider);
 
-            hoverPositionRaw = hit.point;
-            hoverPositionObject = BlockManager.s.GetBlockMedianPosition();
+            hoveringPosition = hit.point;
+            hoverPositionOnBlocks = BlockManager.s.GetBlockMedianPosition();
             
             if(!isHoldingObject){
-                OnHoverStart(hoverPositionObject);
+                OnHoverStart(hoverPositionOnBlocks);
                 isHoldingObject = true;
             }else{
                 //offset hoverPosition to currentObjectInstance
@@ -77,17 +109,17 @@ public class Manipulator : MonoBehaviour
 
                 //if currentObjectInstance is next to an existing object of the same category, snap to it
                 // if(ObjectManager.s.currentObjectScript.isSnappable){
-                //     if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPositionObject)){
+                //     if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPositionOnBlocks)){
                 //         //set currentObjectInstance's position to the snapped position
                 //         currentObjectInstance.transform.position = currentObjectInstance.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
                 //     }else{
-                //         ObjectManager.s.currentObjectInstance.transform.position = hoverPositionObject;
+                //         ObjectManager.s.currentObjectInstance.transform.position = hoverPositionOnBlocks;
                 //     }
                 // }else{
-                //     currentObjectInstance.transform.position = hoverPositionObject;
+                //     currentObjectInstance.transform.position = hoverPositionOnBlocks;
                 // }
 
-                ObjectManager.s.currentObjectInstance.transform.position = hoverPositionObject;
+                ObjectManager.s.currentObjectInstance.transform.position = hoverPositionOnBlocks;
 
                 //check if blocks are empty + within boundry
                 ObjectManager.s.currentObjectInstance.SetPlacingCondition(BlockManager.s.CheckIfCanPlaceObject());
@@ -135,7 +167,23 @@ public class Manipulator : MonoBehaviour
         measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
     }
 
-    void ClickOnGround(InputAction.CallbackContext context){
+    void OnClick(InputAction.CallbackContext context){
+        // Ray ray = new Ray(worldPos, camera.transform.forward);
+        // RaycastHit hit;
+        // //Check if it's hitting on the Object Layer  (layer 9)
+        // if (Physics.Raycast(ray, out hit, 1000f, 1 << 9))
+        // {
+        //     Debug.Log("click on object");
+        // }
+
+        //If hovering on Object
+        if(hoveringObject){
+            hoveringObject.GetComponent<EnergyObject>().ClickOnEnergyObject();
+            Debug.Log("Click");
+        }
+
+
+        //Clickong on Ground
         if(!isHoldingObject || !ObjectManager.s.currentObjectInstance.GetComponent<ObjectInstance>().canPlace)
             return;
 
@@ -145,7 +193,7 @@ public class Manipulator : MonoBehaviour
         BlockManager.s.OnPlaceObject();
 
         //place this object & spawn the next one
-        CategoryManager.s.currentCategory.PrepareObject(hoverPositionObject);
+        CategoryManager.s.currentCategory.PrepareObject(hoverPositionOnBlocks);
         
     }
 }

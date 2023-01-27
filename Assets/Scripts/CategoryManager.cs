@@ -35,15 +35,6 @@ public class CategoryManager : MonoBehaviour
         ObjectManager.s.Initiate();
     }
 
-    // public void GenerateCategoriesInObjectContainer(){
-    //     foreach(Transform tr in transform){
-    //         GameObject newObject = new GameObject();
-    //         newObject.name = tr.name;
-    //         newObject.transform.parent = objectContainer.transform;
-
-    //     }
-    // }
-
     public void SetCurrentCategory(string name){
         foreach(CategoryScript ctg in categoryScripts){
             if(ctg.categoryName == name){

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class EnergyGeneratingObject : EnergyObject
+public class EnergyGeneratingObject : MonoBehaviour
 {
     public float totalCapacity = 1;//kw/dad/panel
     public float chargingRate = 0.01f;//amount of energy able to receive per hour
-    public float currentEnergy = 0;
+    public float currentPowerOutput = 0;
 
     public bool isCharging = false;
 
@@ -20,17 +20,17 @@ public class EnergyGeneratingObject : EnergyObject
     }
 
     void OnEnable(){
-        indicator.text = currentEnergy.ToString("0.00") + " kw";
+        indicator.text = currentPowerOutput.ToString("0.00") + " kw";
     }
 
     void Update(){
         if(isCharging){
-            if(currentEnergy < totalCapacity){
-                currentEnergy += chargingRate * Time.deltaTime;
+            if(currentPowerOutput < totalCapacity){
+                currentPowerOutput += chargingRate * Time.deltaTime;
             }else{
-                currentEnergy = totalCapacity;
+                currentPowerOutput = totalCapacity;
             }
-            indicator.text = currentEnergy.ToString("0.00") + " kw";
+            indicator.text = currentPowerOutput.ToString("0.00") + " kw";
         }
     }
 

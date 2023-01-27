@@ -58,6 +58,11 @@ public class ObjectInstance : MonoBehaviour
         }
 
 
+
+        if(GetComponent<EnergyObject>()){
+            GetComponent<EnergyObject>().OnInitiateEnergyObject();
+        }
+
         // boundOffset = new Vector3(transform.position.x - boundPosition.transform.position.x, 0, transform.position.z - boundPosition.transform.position.z);
 
 
@@ -69,6 +74,7 @@ public class ObjectInstance : MonoBehaviour
         if(GetComponent<EnergyGeneratingObject>()){
             GetComponent<EnergyGeneratingObject>().OnPlaceEnergyGeneratingObject();
         }
+
 
 
         objectStatus = "placed";

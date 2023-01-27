@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnergyStoringObject : EnergyObject
 {
-    public float totalEnergyCapacity = 1;//kw
-    public float currentEnergy = 0;
-    public float storingSpeed = 0.1f;
+    // public float totalEnergyCapacity = 1;//kw
+    // public float currentEnergy = 0;
+    // public float storingSpeed = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
