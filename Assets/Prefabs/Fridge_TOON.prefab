@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 1120473727143445933}
   - component: {fileID: 1120473727143445932}
   - component: {fileID: 6826328470673042981}
-  - component: {fileID: 8581973888120589428}
+  - component: {fileID: 975311205}
   m_Layer: 7
   m_Name: Fridge_TOON
   m_TagString: Untagged
@@ -238,7 +238,7 @@ MonoBehaviour:
   colliders: []
   boundPosition: {fileID: 0}
   boundOffset: {x: 0, y: 0, z: 0}
---- !u!114 &8581973888120589428
+--- !u!114 &975311205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,14 +247,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1120473727143445930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fefa7dd4203b4643bbbcb7edb5c639c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e42e79a77d774d6abfe60df81ed018d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   name: 
-  powerUsage: 1
-  currentPowerUsage: 0
   isOn: 0
-  chargeIndicator: {fileID: 0}
+  currentEnergyUsage: 0
+  energyUsage: 1
 --- !u!1 &1120473727297785812
 GameObject:
   m_ObjectHideFlags: 0

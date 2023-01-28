@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     public string currentMode = "Place";
 
-    public Text totalEnergyGeneratingText, totalEnergyUsingText;
+    public Text totalEnergyGeneratingText, totalEnergyUsingText, totalEnergyStoringText;
 
     // Start is called before the first frame update
     void Start()

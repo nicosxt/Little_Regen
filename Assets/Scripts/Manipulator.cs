@@ -178,7 +178,7 @@ public class Manipulator : MonoBehaviour
 
         //If hovering on Object
         if(hoveringObject){
-            hoveringObject.GetComponent<EnergyObject>().ClickOnEnergyObject();
+            hoveringObject.GetComponent<EnergyObject>().OnClick();
             Debug.Log("Click");
         }
 
