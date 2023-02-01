@@ -15,13 +15,19 @@ public class Battery : EnergyObject
     public TextMeshPro energyAmountIndicator;
 
     bool isCharging;
-    
-    public override void OnInitiate(){
+
+    public bool isFirstBattery;
+
+    public override void OnEnable(){
         currentEnergyStored = 0;
+        base.OnEnable();
+    }
+    
+    public override void OnInitiate(ObjectInstance _objectInstance){
         isCharging = true;
-        Debug.Log("Initiate Battery");
+        // Debug.Log("Initiate Battery");
         EnergyManager.s.batteries.Add(this);
-        base.OnInitiate();
+        base.OnInitiate(_objectInstance);
     }
 
     // Update is called once per frame

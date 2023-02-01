@@ -10,24 +10,41 @@ public class ObjectInstance : MonoBehaviour
     //pending, placed
     public string objectStatus = "pending";
 
-
     //changing materials
     public MeshRenderer[] objectMeshRenderers;
 
     public List<RendererMaterialPair> rendererMaterialPairs = new List<RendererMaterialPair>();
 
-    public bool canPlace;
+    //this variable can be affected by utility scripts attached to the object
+    public bool hasPlacingConstraints = false;
 
-    //all colliders
-    public bool useColliders = false;
-    public Collider[] colliders;
+    //if true, every object can only be spawned next to the first object
+    public EnergyObject energyObject;
+    public bool hasOneGroup = false;
+    public bool isFirstInGroup = false;
 
+    //temporary obsolete!
     public GameObject boundPosition;
     public Vector3 boundOffset;
 
     //enable object while hovering
     public void OnEnable(){
-        canPlace = true;
+
+        //Generator and Batteries would result in hasOneGroup to be true
+
+        if(GetComponent<EnergyObject>()){
+            energyObject = GetComponent<EnergyObject>();
+            energyObject.OnEnable();
+            if(GetComponent<Battery>()){
+                hasOneGroup = true;
+                isFirstInGroup = (EnergyManager.s.batteries.Count == 0);
+            }else if(GetComponent<Generator>()){
+                hasOneGroup = true;
+                isFirstInGroup = (EnergyManager.s.generators.Count == 0);
+            }
+        }
+
+
 
         objectMeshRenderers = transform.GetComponentsInChildren<MeshRenderer>();
 
@@ -51,60 +68,40 @@ public class ObjectInstance : MonoBehaviour
 
         name += ObjectManager.s.transform.childCount.ToString();
 
-        //initiate colliders
-        if(useColliders){
-            colliders = GetComponentsInChildren<Collider>();
-            InitiateColliders();
-        }
-
-
-
-        if(GetComponent<EnergyObject>()){
-            GetComponent<EnergyObject>().OnInitiate();
-        }
-
-        // boundOffset = new Vector3(transform.position.x - boundPosition.transform.position.x, 0, transform.position.z - boundPosition.transform.position.z);
-
 
     }
 
+    void Update(){
+    }
+
+
     //when object is clicked and actually placed to the scene
     public void PlaceObject(){
-        //Initiate utilities on this object
-        if(GetComponent<EnergyGeneratingObject>()){
-            GetComponent<EnergyGeneratingObject>().OnPlaceEnergyGeneratingObject();
-        }
-
-
 
         objectStatus = "placed";
         SetMaterial("placed");
 
-        if(useColliders){
-            foreach(Collider c in colliders){
-                c.gameObject.GetComponent<ObjectInstanceCollider>().OnPlaceObject();
-          }
-        }
-
+        if(energyObject)
+            energyObject.OnInitiate(this);
 
         //add yourself to ObjectManager
         ObjectManager.s.objects.Add(this.gameObject);
     }
 
-    //set condition to see if object can be placed
+    //set condition to see if object can be placed via Block logic
     //if object has already been placed, return
-    public void SetPlacingCondition(bool _condition){
+    public void SetPlacingCondition(bool _canPlace){
         if(objectStatus == "placed"){
             return;
         }
 
-        if(_condition){
+        if(_canPlace){
             SetMaterial("pending");
         }else{
             SetMaterial("error");
         }
-        canPlace = _condition;
     }
+
 
     //set material 
     public void SetMaterial(string _status){
@@ -119,15 +116,37 @@ public class ObjectInstance : MonoBehaviour
                 rmPair.renderer.materials = rmPair.errorMaterials;
             }
         }
-
     }
 
-    void InitiateColliders(){
-        foreach(Collider c in colliders){
-            c.gameObject.AddComponent<ObjectInstanceCollider>();
-            c.gameObject.GetComponent<ObjectInstanceCollider>().OnInitiate(this);
+    public bool CanPlaceObject(){
+        //check if is Next To Previous Grouped Object
+        if(energyObject && hasOneGroup && !isFirstInGroup){
+            if(energyObject is Battery){
+                float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.x);
+                float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.z);
+                if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
+                    //is next to the previous block
+                    return true;
+                }else{
+                    return false;
+                }
+            }else if(energyObject is Generator){
+                float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.x);
+                float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.z);
+                if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
+                    //is next to the previous block
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return true;
         }
     }
+
 
 }
 

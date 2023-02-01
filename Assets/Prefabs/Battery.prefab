@@ -659,7 +659,7 @@ MonoBehaviour:
   name: 
   currentEnergyStored: 0
   energyCapacity: 1
-  chargingRate: 0.01
+  chargingRate: 0.05
   batteryIndicator: {fileID: 5085396912754465125}
   energyAmountIndicator: {fileID: 5085396912470492899}
 --- !u!1 &5085396912557826754

@@ -36,6 +36,9 @@ public class Manipulator : MonoBehaviour
     Vector2 mousePos;
     Vector3 worldPos;
 
+    //Placing Conditiopn
+    public bool canPlace = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -104,25 +107,15 @@ public class Manipulator : MonoBehaviour
                 OnHoverStart(hoverPositionOnBlocks);
                 isHoldingObject = true;
             }else{
-                //offset hoverPosition to currentObjectInstance
-                //UpdateMeasurements(hoverPosition);
-
-                //if currentObjectInstance is next to an existing object of the same category, snap to it
-                // if(ObjectManager.s.currentObjectScript.isSnappable){
-                //     if(currentObjectInstance.GetComponent<EnergyGeneratingObject>().CanSnapToObjects(hoverPositionOnBlocks)){
-                //         //set currentObjectInstance's position to the snapped position
-                //         currentObjectInstance.transform.position = currentObjectInstance.GetComponent<EnergyGeneratingObject>().GetSnappedPosition();
-                //     }else{
-                //         ObjectManager.s.currentObjectInstance.transform.position = hoverPositionOnBlocks;
-                //     }
-                // }else{
-                //     currentObjectInstance.transform.position = hoverPositionOnBlocks;
-                // }
-
                 ObjectManager.s.currentObjectInstance.transform.position = hoverPositionOnBlocks;
 
                 //check if blocks are empty + within boundry
-                ObjectManager.s.currentObjectInstance.SetPlacingCondition(BlockManager.s.CheckIfCanPlaceObject());
+                //and check if object doesn't have placing constraints
+                canPlace = BlockManager.s.CheckIfCanPlaceObject() && 
+                ObjectManager.s.currentObjectInstance.CanPlaceObject();
+
+                BlockManager.s.SetBlockPlacingCondition(canPlace);
+                ObjectManager.s.currentObjectInstance.SetPlacingCondition(canPlace);
 
             }
         }else{
@@ -168,23 +161,15 @@ public class Manipulator : MonoBehaviour
     }
 
     void OnClick(InputAction.CallbackContext context){
-        // Ray ray = new Ray(worldPos, camera.transform.forward);
-        // RaycastHit hit;
-        // //Check if it's hitting on the Object Layer  (layer 9)
-        // if (Physics.Raycast(ray, out hit, 1000f, 1 << 9))
-        // {
-        //     Debug.Log("click on object");
-        // }
 
         //If hovering on Object
         if(hoveringObject){
             hoveringObject.GetComponent<EnergyObject>().OnClick();
             Debug.Log("Click");
         }
-
-
+        
         //Clickong on Ground
-        if(!isHoldingObject || !ObjectManager.s.currentObjectInstance.GetComponent<ObjectInstance>().canPlace)
+        if(!isHoldingObject || !canPlace)
             return;
 
         //Debug.Log("Clicking on block");

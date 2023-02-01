@@ -162,90 +162,14 @@ public class BlockManager : MonoBehaviour
             }
         }
         bool canPlace = isBlockEmpty && isHoverWithinBoundry;
-        foreach(Block block in hoveredBlocks){
-            block.SetHighlight(canPlace ? "selected" : "error");
-        }
         return canPlace;
     }
 
-    // void HoverOnBlock(){
-    //     Vector2 mousePos = Mouse.current.position.ReadValue();
-    //     Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
-
-    //     Ray ray = new Ray(worldPos, camera.transform.forward);
-    //     RaycastHit hit;
-    //     //Check if it's hitting on the Block Layer  (layer 8)
-    //     if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
-    //     {
-    //         //if it's hitting on a block, get index of the block
-    //         if(hit.collider.transform.parent.GetComponent<Block>()){
-    //             hoveredBlock = hit.collider.transform.parent.GetComponent<Block>();
-    //             ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
-
-                
-    //             hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX + currentObjectScript.objectSize.x - 1);
-    //             hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ - currentObjectScript.objectSize.z + 1);
-
-    //             if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
-    //                 isHoverWithinBoundry = false;
-    //             }else{
-    //                 isHoverWithinBoundry = true;
-    //             }
-
-    //             //Check who is in hoveredBlocks
-    //             foreach (Block block in blocks)
-    //             {
-    //                 if(CheckIfBlockIsWithinIndexRange(block, hoveredBlockRangeX, hoveredBlockRangeZ)){
-    //                     if(!hoveredBlocks.Contains(block)){
-    //                         hoveredBlocks.Add(block);
-    //                     }
-    //                 }else{
-    //                     //block.SetHighlight("none");
-    //                     block.SetHighlight("default");
-    //                     if(hoveredBlocks.Contains(block)){
-    //                         hoveredBlocks.Remove(block);
-                            
-    //                     }
-    //                 }
-    //             }
-                
-
-    //             foreach (Block block in hoveredBlocks)
-    //             {
-    //                 block.SetHighlight((CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry) ? "selected" : "error");
-    //             }
-
-
-    //         }else{
-    //             ResetBlocksOnHoverNone();
-    //         }
-    //     }else{
-    //         ResetBlocksOnHoverNone();
-    //     }
-        
-    // }
-
-
-    // void ClickOnBlock(InputAction.CallbackContext context){
-    //     Vector2 mousePos = Mouse.current.position.ReadValue();
-    //     Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
-
-    //     //Debug.Log("Clicking on block");
-
-    //     if(hoveredBlocks.Count > 0 && CheckIfBlocksAreEmpty(hoveredBlocks) && isHoverWithinBoundry){
-
-    //         //check if all blocks are empty
-    //         blockMedianPosition = Vector3.zero;
-    //         ObjectScript currentObjectScript = CategoryManager.s.currentCategory.currentObjectScript;
-    //         foreach(Block block in hoveredBlocks){
-    //             block.containedObject = currentObjectScript.gameObject;
-    //             blockMedianPosition += block.transform.position;
-    //         }
-    //         blockMedianPosition /= hoveredBlocks.Count;
-    //         blockMedianPosition.y += heightOffset;
-    //         CategoryManager.s.currentCategory.PrepareObject(blockMedianPosition);
-    //     }
-    // }
+    public void SetBlockPlacingCondition(bool _canPlace){
+        foreach(Block block in hoveredBlocks){
+            block.SetHighlight(_canPlace ? "selected" : "error");
+        }
+    }
 
     public void OnPlaceObject(){
         foreach(Block block in hoveredBlocks){

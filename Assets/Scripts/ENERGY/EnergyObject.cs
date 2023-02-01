@@ -5,28 +5,18 @@ using TMPro;
 
 public class EnergyObject : MonoBehaviour
 {
+    [Header("All Energy is in KiloWatts")]
     public string name;
 
-    //public float energyInput, energyOutput;
+    //reference to ObjectInstance script
+    public ObjectInstance objectInstance;
 
-    //public float powerUsage = 1f;// K Watts
-    //public float currentPowerUsage;
-
-    //public bool isOn;
-
-    //public GameObject chargeIndicator;
-    
-    // public void OnInitiateEnergyObject(){
-    //     isOn = true;
-    //     name = gameObject.name;
-    //     EnergyManager.s.energyObjects.Add(this);
-    //     chargeIndicator = Instantiate(EnergyManager.s.chargeIndicatorPrefab, transform);
-    //     chargeIndicator.transform.localPosition = new Vector3(0, -0.45f, 0);
-    //     //chargeIndicator.SetActive(true);
-    // }
-
-    public virtual void OnInitiate(){
+    public virtual void OnEnable(){
         name = gameObject.name;
+    }
+
+    public virtual void OnInitiate(ObjectInstance _objectInstance){
+        objectInstance = _objectInstance;
         Debug.Log("Initiate Energy Object");
     }
 
@@ -45,6 +35,12 @@ public class EnergyObject : MonoBehaviour
     protected virtual void Update(){
 
     }
+
+    // protected void SetPlacingConstraints(bool _hasConstraints){
+    //     GetComponent<ObjectInstance>().hasPlacingConstraints = _hasConstraints;
+    // }
+
+
 
     // void Update(){
     //     // currentPowerUsage = isOn ? powerUsage : 0f;

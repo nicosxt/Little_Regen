@@ -4,50 +4,50 @@ using UnityEngine;
 
 public class ObjectInstanceCollider : MonoBehaviour
 {
-    public ObjectInstance objectInstance;
+    // public ObjectInstance objectInstance;
 
-    public void OnInitiate(ObjectInstance _os){
-        objectInstance = _os;
-    }
+    // public void OnInitiate(ObjectInstance _os){
+    //     objectInstance = _os;
+    // }
 
-    void OnEnable(){
-        if(!GetComponent<Rigidbody>()){
-            gameObject.AddComponent<Rigidbody>();
-            gameObject.GetComponent<Rigidbody>().useGravity = false;
-            gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
+    // void OnEnable(){
+    //     if(!GetComponent<Rigidbody>()){
+    //         gameObject.AddComponent<Rigidbody>();
+    //         gameObject.GetComponent<Rigidbody>().useGravity = false;
+    //         gameObject.GetComponent<Rigidbody>().isKinematic = true;
+    //     }
 
-        GetComponent<Collider>().isTrigger = true;
-    }
+    //     GetComponent<Collider>().isTrigger = true;
+    // }
     
-    public void OnPlaceObject(){
-        GetComponent<Collider>().isTrigger = false;
-    }
+    // public void OnPlaceObject(){
+    //     GetComponent<Collider>().isTrigger = false;
+    // }
 
-    void OnTriggerEnter(Collider other){
+    // void OnTriggerEnter(Collider other){
 
-        //check if it's colliding with the same object's other colliders
+    //     //check if it's colliding with the same object's other colliders
 
-        if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
-            if(other.gameObject.GetComponent<ObjectInstanceCollider>().objectInstance == objectInstance){
-                return;
-            }
-        }
+    //     if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
+    //         if(other.gameObject.GetComponent<ObjectInstanceCollider>().objectInstance == objectInstance){
+    //             return;
+    //         }
+    //     }
 
-        //Debug.Log("entering " + other.name);
-        if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
-            //do not plant object if colliding with others
-            objectInstance.SetPlacingCondition(false);
-        }
-    }
+    //     //Debug.Log("entering " + other.name);
+    //     if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
+    //         //do not plant object if colliding with others
+    //         objectInstance.SetPlacingCondition(false);
+    //     }
+    // }
 
-    void OnTriggerExit(Collider other) {
-        if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
-            if(other.gameObject.GetComponent<ObjectInstanceCollider>().objectInstance == objectInstance){
-                return;
-            }
-        }
+    // void OnTriggerExit(Collider other) {
+    //     if(other.gameObject.GetComponent<ObjectInstanceCollider>()){
+    //         if(other.gameObject.GetComponent<ObjectInstanceCollider>().objectInstance == objectInstance){
+    //             return;
+    //         }
+    //     }
 
-        objectInstance.SetPlacingCondition(true);
-    }
+    //     objectInstance.SetPlacingCondition(true);
+    // }
 }
