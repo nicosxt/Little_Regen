@@ -24,10 +24,6 @@ public class Appliance : EnergyObject
     {
         currentEnergyUsage = isOn ? energyUsage : 0;
 
-        // if(isOn){
-        //     //taking energy from the system
-        // }
-
         base.Update();
         
     }
@@ -38,7 +34,7 @@ public class Appliance : EnergyObject
 
     public override void OnInitiate(ObjectInstance _objectInstance){
         // Debug.Log("Initiate Appliance");
-        isOn = true;
+        //isOn = true;
 
         chargeIndicator = Instantiate(EnergyManager.s.chargeIndicatorPrefab, transform);
         chargeIndicator.transform.localPosition = new Vector3(0, -0.45f, 0);

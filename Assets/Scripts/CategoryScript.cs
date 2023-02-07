@@ -88,6 +88,12 @@ public class CategoryScript : MonoBehaviour
     public void PrepareObject(Vector3 _pos){
         //Quaternion _rot = Quaternion.identity;
         // _rot.eulerAngles = new Vector3(0, 45f, 0);
+
+        // //if object amount limit has been reached, return
+        if(ObjectManager.s.currentObjectScript.objectAmountLimit != -1 && ObjectManager.s.currentObjectScript.objectAmount >= ObjectManager.s.currentObjectScript.objectAmountLimit)
+            return;
+
+        Debug.Log("Prepare obj" + ObjectManager.s.currentObjectScript.objectPrefab.name);
         GameObject newObject = Instantiate(ObjectManager.s.currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
 
         ObjectManager.s.currentObjectInstance = newObject.GetComponent<ObjectInstance>();

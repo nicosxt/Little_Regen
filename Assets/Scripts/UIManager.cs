@@ -21,8 +21,7 @@ public class UIManager : MonoBehaviour
     public  GameObject categoryButtonPrefab;
     public GameObject categoryButtonContainer;
 
-    public GameObject menuContainer;
-
+    public GameObject menuContainer, modeButtonContainer;
     public string currentMode = "Place";
 
     public Text totalEnergyGeneratingText, totalEnergyUsingText, totalEnergyStoringText;
@@ -30,7 +29,12 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Find all elements with <UIButton> in Scene
+        foreach(UIButton b in FindObjectsOfType<UIButton>()){
+            b.OnInitiate();
+        }
+
+        SetCurrentMode(currentMode);
     }
 
     // Update is called once per frame
@@ -39,11 +43,15 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void SetCurrentMode(GameObject g){
-        currentMode = g.name;
+    public void SetCurrentMode(string _name){
+        currentMode = _name;
         foreach(Transform t in menuContainer.transform){
-            t.gameObject.SetActive(t.name == currentMode);
+            t.gameObject.SetActive(t.name == _name);
         }
+        foreach(Transform t in modeButtonContainer.transform){
+            t.GetComponent<UIButton>().SetState(t.name == _name ? "selected" : "default");
+        }
+        //foreach()
     }
 
 }

@@ -11,30 +11,36 @@ public class Generator : EnergyObject
 
     //later it will be solar, wind, hydro, etc
 
-    public float currentEnergy = 1;
-    public float energyCapacity = 1;
-
     
 
     //public Transform chargeIndicator;
     //public TextMeshPro energyAmountIndicator;
-
     // public bool isFirstGenerator; 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
+    public float operatingVoltage, operatingAmperage, operatingEnergy;
+    
+    //when sunshine isn't sufficient, are volts and amps both proportionally affected??
+    public float currentEnergy;
+    
 
     // Update is called once per frame
     protected override void Update()
     {
+        currentEnergy = operatingEnergy * EnergyManager.s.energyLoss * EnergyManager.s.sunAmount;
+
         base.Update();
     }
 
     public override void OnEnable(){
+        InitiateEnergyParameters();
         base.OnEnable();
+    }
+
+    void InitiateEnergyParameters(){
+        operatingVoltage = 30f;//volts
+        operatingAmperage = 8f;//amps
+        operatingEnergy = operatingVoltage * operatingAmperage;//watts
     }
 
     public override void OnInitiate(ObjectInstance _objectInstance){

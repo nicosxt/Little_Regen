@@ -35,13 +35,15 @@ public class ObjectInstance : MonoBehaviour
         if(GetComponent<EnergyObject>()){
             energyObject = GetComponent<EnergyObject>();
             energyObject.OnEnable();
-            if(GetComponent<Battery>()){
-                hasOneGroup = true;
-                isFirstInGroup = (EnergyManager.s.batteries.Count == 0);
-            }else if(GetComponent<Generator>()){
-                hasOneGroup = true;
-                isFirstInGroup = (EnergyManager.s.generators.Count == 0);
-            }
+
+            //conditions for objects that needs to be grouped [PROBABLY DEPRECATED]
+            // if(GetComponent<Battery>()){
+            //     hasOneGroup = true;
+            //     isFirstInGroup = (EnergyManager.s.batteries.Count == 0);
+            // }else if(GetComponent<Generator>()){
+            //     hasOneGroup = true;
+            //     isFirstInGroup = (EnergyManager.s.generators.Count == 0);
+            // }
         }
 
 
@@ -86,6 +88,8 @@ public class ObjectInstance : MonoBehaviour
 
         //add yourself to ObjectManager
         ObjectManager.s.objects.Add(this.gameObject);
+        //increase object count for this type
+        ObjectManager.s.currentObjectScript.objectAmount ++;
     }
 
     //set condition to see if object can be placed via Block logic

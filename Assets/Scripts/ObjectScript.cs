@@ -14,6 +14,11 @@ public class ObjectScript : MonoBehaviour {
     //how much grid this object takes
     public Vector3 objectSize = new Vector3(1,1,1);
 
+    //amount available
+    public int objectAmountLimit = -1;
+    public int objectAmount = 0;
+    public bool isUnlimited = true;
+
     //UI Button Related
     //default, selected, hover
     public string currentState = "default";
@@ -52,6 +57,18 @@ public class ObjectScript : MonoBehaviour {
         }else if(_s == "selected"){
             image.color = Color.white;
             UIButton.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        }
+    }
+
+    public bool IsAvailable(){
+        if(isUnlimited){
+            return true;
+        }else{
+            if(objectAmount < objectAmountLimit){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 }

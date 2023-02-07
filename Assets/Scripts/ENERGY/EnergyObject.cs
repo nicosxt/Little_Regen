@@ -11,10 +11,12 @@ public class EnergyObject : MonoBehaviour
     //reference to ObjectInstance script
     public ObjectInstance objectInstance;
 
+    //when object is enabled in the scene (On Hover Mode)
     public virtual void OnEnable(){
         name = gameObject.name;
     }
 
+    //when object is 'registered' in the scene
     public virtual void OnInitiate(ObjectInstance _objectInstance){
         objectInstance = _objectInstance;
         Debug.Log("Initiate Energy Object");
@@ -43,7 +45,7 @@ public class EnergyObject : MonoBehaviour
 
 
     // void Update(){
-    //     // currentPowerUsage = isOn ? powerUsage : 0f;
+    //     // currentenergyUsage = isOn ? energyUsage : 0f;
     //     // chargeIndicator.SetActive(isOn);
     // }
 

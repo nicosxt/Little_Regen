@@ -91,6 +91,14 @@ public class Manipulator : MonoBehaviour
     }
 
     void HoverOnGround(){
+
+        if(!ObjectManager.s.currentObjectScript.IsAvailable()){
+            isHoldingObject = false;
+            return;
+        }
+            
+
+
         Ray ray = new Ray(worldPos, camera.transform.forward);
         RaycastHit hit;
         //Check if it's hitting on the Block Layer  (layer 8)
@@ -140,7 +148,7 @@ public class Manipulator : MonoBehaviour
         // textZ.SetActive(false);
         // textX.SetActive(false);
 
-        if(isHoldingObject){
+        if(isHoldingObject && ObjectManager.s.currentObjectInstance){
             Destroy(ObjectManager.s.currentObjectInstance.gameObject);
             ObjectManager.s.currentObjectInstance = null;
             isHoldingObject = false;
@@ -173,12 +181,19 @@ public class Manipulator : MonoBehaviour
             return;
 
         //Debug.Log("Clicking on block");
-        ObjectManager.s.currentObjectInstance.PlaceObject();
-        ObjectManager.s.currentObjectInstance = null;
-        BlockManager.s.OnPlaceObject();
 
-        //place this object & spawn the next one
-        CategoryManager.s.currentCategory.PrepareObject(hoverPositionOnBlocks);
+        if(ObjectManager.s.currentObjectScript.IsAvailable()){
+            ObjectManager.s.currentObjectInstance.PlaceObject();
+            ObjectManager.s.currentObjectInstance = null;
+            BlockManager.s.OnPlaceObject();
+            //place this object & spawn the next one
+            CategoryManager.s.currentCategory.PrepareObject(hoverPositionOnBlocks);
+        }else{
+            ObjectManager.s.currentObjectInstance = null;
+        }
+
+
+
         
     }
 }
