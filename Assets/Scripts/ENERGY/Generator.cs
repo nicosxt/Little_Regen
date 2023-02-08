@@ -8,7 +8,6 @@ public class Generator : EnergyObject
     //for now it's just solar
     //only one solar group is needed for the scene
     //so all solar should be next to the original solar
-
     //later it will be solar, wind, hydro, etc
 
     
@@ -21,13 +20,15 @@ public class Generator : EnergyObject
     public float operatingVoltage, operatingAmperage, operatingEnergy;
     
     //when sunshine isn't sufficient, are volts and amps both proportionally affected??
-    public float currentEnergy;
+    public float currentEnergy, currentVoltage, currentAmperage;
     
 
     // Update is called once per frame
     protected override void Update()
     {
-        currentEnergy = operatingEnergy * EnergyManager.s.energyLoss * EnergyManager.s.sunAmount;
+        currentEnergy = operatingEnergy * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
+        currentVoltage = operatingVoltage * (currentEnergy / operatingEnergy);
+        currentAmperage = currentEnergy / currentVoltage;
 
         base.Update();
     }

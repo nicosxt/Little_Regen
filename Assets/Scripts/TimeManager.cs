@@ -19,14 +19,15 @@ public class TimeManager : MonoBehaviour
 
     public float timeMultiplier = 10f;
     public float totalHours = 0f;
+    public float fractionMinutes = 0f;
     public float totalMinutes = 0f;
 
-    private float timeScale = 1f;
+    public float timeScale = 1f;
     
     public bool isSimulating = false;
 
     public GameObject playButton, pauseButton;
-    public TextMeshProUGUI totalHoursText, totalMinutesText;
+    public TextMeshProUGUI hoursText, minutesText;
 
     // Start is called before the first frame update
     void Start()
@@ -41,16 +42,17 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         if(isSimulating){
+            fractionMinutes += Time.deltaTime * timeScale * timeMultiplier;
             totalMinutes += Time.deltaTime * timeScale * timeMultiplier;
-            if(totalMinutes >= 60f){
+            if(fractionMinutes >= 60f){
                 totalHours += 1f;
-                totalMinutes = 0f;
+                fractionMinutes = 0f;
             }
         }
 
 
-        totalHoursText.text = totalHours.ToString("F0");
-        totalMinutesText.text = totalMinutes.ToString("F0");
+        hoursText.text = totalHours.ToString("F0");
+        minutesText.text = fractionMinutes.ToString("F0");
     }
 
     public void ToggleSimulation(){

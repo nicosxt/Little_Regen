@@ -216,8 +216,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.4228945, y: 4.800484, z: 2.1812396}
-  m_Center: {x: 0.075516775, y: 2.445036, z: 0.16613795}
+  m_Size: {x: 2.4228945, y: 2.4961488, z: 2.1812396}
+  m_Center: {x: 0.07551682, y: 1.2928685, z: 0.16613793}
 --- !u!114 &6826328470673042981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,9 +233,10 @@ MonoBehaviour:
   objectStatus: pending
   objectMeshRenderers: []
   rendererMaterialPairs: []
-  canPlace: 0
-  useColliders: 0
-  colliders: []
+  hasPlacingConstraints: 0
+  energyObject: {fileID: 0}
+  hasOneGroup: 0
+  isFirstInGroup: 0
   boundPosition: {fileID: 0}
   boundOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &975311205
@@ -251,10 +252,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 
+  objectInstance: {fileID: 0}
   isOn: 0
-  currentEnergyUsage: 0
-  energyUsage: 0.5
+  isConnecteddToEnergySource: 0
   chargeIndicator: {fileID: 0}
+  currentDischargingAmperage: 0
+  dischargingAmperage: 1.1
 --- !u!1 &1120473727297785812
 GameObject:
   m_ObjectHideFlags: 0

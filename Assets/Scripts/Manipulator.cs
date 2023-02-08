@@ -65,7 +65,7 @@ public class Manipulator : MonoBehaviour
 
         if(UIManager.s.currentMode == "Place"){
             HoverOnGround();
-        }else if(UIManager.s.currentMode == "Use"){
+        }else if(UIManager.s.currentMode == "Energy"){
             HoverOnObjects();
         }
         
@@ -76,7 +76,7 @@ public class Manipulator : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1000f, 1 << 7))
         {
-            //hoveringObject = hit.collider;
+            hoveringObject = hit.collider.gameObject;
             //Debug.Log(hit.collider.name);
 
             if(hit.collider.GetComponent<EnergyObject>()){

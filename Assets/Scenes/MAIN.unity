@@ -389,7 +389,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 715806036}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &148099048
 MonoBehaviour:
@@ -1755,6 +1755,7 @@ Transform:
   m_Children:
   - {fileID: 1533511741}
   - {fileID: 567660209}
+  - {fileID: 1798685152}
   - {fileID: 1378993954}
   - {fileID: 1369738169}
   - {fileID: 148099047}
@@ -2315,14 +2316,25 @@ MonoBehaviour:
   totalEnergyGenerating: 0
   totalVoltsGenerating: 0
   totalAmpsGenerating: 0
-  totalEnergyStoring: 0
-  totalEnergyUsage: 0
+  totalEnergyStored: 0
+  totalBatteryVoltage: 0
+  currentBatteryAmperage: 0
+  totalBatteryAmpHours: 0
+  totalBatteryCapacity: 0
+  batteryChargedAmount: 0
+  totalApplianceLoad: 0
+  currentACAmps: 0
+  currentACEnergy: 0
+  ACVolts: 110
+  currentDCAmps: 0
   sunAmount: 0
-  energyLoss: 0.75
+  generatorEnergyLoss: 0.75
   generators: []
   energyGeneratorIndicator: {fileID: 3378335604478757017}
   appliances: []
   batteries: []
+  chargeController: {fileID: 0}
+  inverter: {fileID: 0}
   chargeIndicatorPrefab: {fileID: 6081866645867167856, guid: aecdeea0985c9446ca1528953c24399a, type: 3}
 --- !u!4 &831934515
 Transform:
@@ -3507,9 +3519,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy
+  m_Text: 'Battery
 
-    Storing:'
+    Percentage:'
 --- !u!222 &1368372801
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3548,7 +3560,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 715806036}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1369738170
 MonoBehaviour:
@@ -3606,7 +3618,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 715806036}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1378993955
 MonoBehaviour:
@@ -4916,6 +4928,64 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1754217430}
   m_Mesh: {fileID: 6669779627962966640, guid: bb1b70c53d34d43c49a995706163ab35, type: 3}
+--- !u!1 &1798685151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1798685152}
+  - component: {fileID: 1798685153}
+  m_Layer: 0
+  m_Name: Inverter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1798685152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798685151}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 715806036}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1798685153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798685151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba8aacec52d04324a06880c1ea4130c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectCategory: {fileID: 0}
+  objectPrefab: {fileID: 1772099808073912281, guid: 2a832e094a5f94f24b8aac73f1f8c21d, type: 3}
+  objectName: 
+  objectIndex: 0
+  objectSize: {x: 1, y: 1, z: 1}
+  objectAmountLimit: 1
+  objectAmount: 0
+  isUnlimited: 0
+  currentState: default
+  UIButton: {fileID: 0}
+  button: {fileID: 0}
+  image: {fileID: 0}
+  text: {fileID: 0}
+  isSnappable: 0
 --- !u!1 &1802351657
 GameObject:
   m_ObjectHideFlags: 0
@@ -7099,7 +7169,7 @@ GameObject:
   - component: {fileID: 2737133594909687891}
   - component: {fileID: 2737133594909687888}
   m_Layer: 5
-  m_Name: Hour
+  m_Name: HoursText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7733,7 +7803,7 @@ GameObject:
   - component: {fileID: 2737133596175642404}
   - component: {fileID: 2737133596175642405}
   m_Layer: 5
-  m_Name: Minutes
+  m_Name: MinutesText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8291,12 +8361,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeMultiplier: 5
   totalHours: 0
+  fractionMinutes: 0
   totalMinutes: 0
   isSimulating: 0
   playButton: {fileID: 2737133594553223726}
   pauseButton: {fileID: 2737133595237052666}
-  totalHoursText: {fileID: 2737133594909687888}
-  totalMinutesText: {fileID: 2737133596175642405}
+  hoursText: {fileID: 2737133594909687888}
+  minutesText: {fileID: 2737133596175642405}
 --- !u!114 &6362510354600808739
 MonoBehaviour:
   m_ObjectHideFlags: 0

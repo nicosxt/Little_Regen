@@ -15,12 +15,11 @@ public class Battery : EnergyObject
     //additional parameters
     public float chargingVoltage;//this doesn't change
     public float chargingAmperageMax;
-    public float chargingAmperage;//current amperage, if larger than max, battery explodes
-    public float ampHours;
+    public float chargingAmpHours;
     public float totalCapacity;//watts
-    public float chargingWattage;//watts
 
-    public float hoursToCharge = 0;
+    public float currentAmperage;//current amperage, if larger than max, battery explodes
+    public float currentCapacity;
     
     bool isCharging;
 
@@ -39,10 +38,11 @@ public class Battery : EnergyObject
     }
 
     void InitiateEnergyParameters(){
-        chargingVoltage = 24f;//volts
-        ampHours = 100f;
-        totalCapacity = ampHours * chargingVoltage;//amps
-        chargingAmperageMax = 12f;//amps
+        chargingVoltage = 14.4f;//volts
+        chargingAmpHours = 200f;
+        totalCapacity = chargingVoltage * chargingAmpHours;//watts
+        chargingAmperageMax = 100f;//amps
+
     }
 
     // Update is called once per frame

@@ -16,21 +16,35 @@ public class EnergyManager : MonoBehaviour
 
     [Header("All Energy is in Watts")]
     [Space(5)]
-    //generating
+    //Generators
     public float totalEnergyGenerating = 0;
     float totalEnergyGeneratingKW = 0;
-    // public float totalVoltsGenerating = 0;
-    // public float totalAmpsGenerating = 0;
+    public float totalVoltsGenerating = 0;
+    public float totalAmpsGenerating = 0;
     
-    public float totalEnergyStored = 0;
+    //Batteries
+    public float batteryVoltage = 0;
+    public float currentBatteryAmpCharge, currentBatteryAmpDischarge;
+    public float currentBatteryEnergyDelta = 0;//charge - discharge
+    public float currentBatteryAmpHours, totalBatteryAmpHours = 0;
+    public float batteryChargedPercentage = 0;
+
+    //Appliances
+    public float totalApplianceLoad = 0;//watts, before inverter converts it to AC
+    public float currentACAmps;
+    public float currentACEnergyDischarge;
+    public float currentACEnergyDischargeKW;
+    public float ACVolts = 110f;
+    
+    public float currentDCAmps;
+
+
     // public float totalVoltsStoring = 0;
     // public float totalAmpsStoring = 0;
 
-    public float totalEnergyUsed = 0;
-
     public float sunAmount = 0;
 
-    public float energyLoss = 0.75f;
+    public float generatorEnergyLoss = 0.75f;
 
 
     // public List<EnergyGeneratingObject> energyGeneratingObjects = new List<EnergyGeneratingObject>();
@@ -40,6 +54,9 @@ public class EnergyManager : MonoBehaviour
     public GameObject energyGeneratorIndicator;
     public List<Appliance> appliances = new List<Appliance>();
     public List<Battery> batteries = new List<Battery>();
+    //public List<ChargeController> chargeControllers = new List<ChargeController>();
+    public ChargeController chargeController;
+    public Inverter inverter;
 
     public GameObject chargeIndicatorPrefab;
     
@@ -59,38 +76,94 @@ public class EnergyManager : MonoBehaviour
             return;
         
 
+        //Generators
         //assuming all energy generating objects are connected in series
         totalEnergyGenerating = 0;
+        totalVoltsGenerating = 0;
+        totalAmpsGenerating = 0;
         if(generators.Count > 0){
             foreach(Generator obj in generators){
                 totalEnergyGenerating += obj.currentEnergy;
+                totalVoltsGenerating += obj.currentVoltage;
             }
+            if(generators.Count > 0)
+                totalAmpsGenerating = generators[0].currentAmperage;
         }
 
+        //Get total voltage from Batteries
         //this depends on the charge controller output?
-        totalEnergyStored = 0;
+        batteryVoltage = 0;
+        totalBatteryAmpHours = 0;
         if(batteries.Count > 0){
             foreach(Battery obj in batteries){
-                totalEnergyStored += obj.chargingWattage;
+                batteryVoltage += obj.chargingVoltage;
+                totalBatteryAmpHours += obj.chargingAmpHours;
             }
         }
 
+        //⚡️🤙 Charge Controller Magic ⚡️🤙
+        if(chargeController != null){
+            chargeController.inputVoltage = totalVoltsGenerating;
+            chargeController.inputAmperage = totalAmpsGenerating;
+            chargeController.outputVoltage = batteryVoltage;
+            chargeController.outputAmperage = totalVoltsGenerating * totalAmpsGenerating / batteryVoltage;
+        }
+
+        //current battery amperage charge is the charge controller output amperage
+        currentBatteryAmpCharge = chargeController.outputAmperage;
+
+        //calculating total accumulating amperage charged into the battery
+        if(currentBatteryAmpHours < totalBatteryAmpHours){
+            currentBatteryAmpHours += chargeController.outputAmperage * Time.deltaTime * TimeManager.s.timeScale * TimeManager.s.timeMultiplier / 60f;
+        }else{
+            currentBatteryAmpHours = totalBatteryAmpHours;
+        }
+
+        //⚡️🤙 Inverter Magic ⚡️🤙
+        if(inverter != null){
+            inverter.inputEnergy = batteryVoltage;
+        }
+
+        //Appliances
+        currentACAmps = 0;
+        foreach(Appliance obj in appliances){
+            currentACAmps += obj.currentDischargingAmperage;
+        }
+        currentACEnergyDischarge = currentACAmps * ACVolts;
+
+        //Get amount of amps needed from the inverter
+        //minus power of battery from inverter load
+        if(inverter != null){
+            currentDCAmps = currentACEnergyDischarge / batteryVoltage;
+            currentBatteryAmpDischarge = currentDCAmps;
+        }
+
+        currentBatteryEnergyDelta = currentBatteryAmpCharge * batteryVoltage - currentACEnergyDischarge;
+        currentBatteryAmpHours += currentBatteryEnergyDelta/batteryVoltage;
 
         //indicator for totally generating energy [POSSIBLY DEPRECATED]
         //energyGeneratorIndicator.GetComponent<Lil_Indicator>().UpdateAmount(totalEnergyGenerating);
 
 
 
-        totalEnergyUsed = 0;
-        foreach(Appliance obj in appliances){
-            totalEnergyUsed += obj.currentEnergyUsage;
+        //Divide the load into individual batteries
+        if(batteries.Count > 0){
+            foreach(Battery obj in batteries){
+                obj.currentAmperage = currentBatteryAmpHours / batteries.Count;
+                obj.currentCapacity = obj.currentAmperage * obj.chargingVoltage;
+            }
         }
+        batteryChargedPercentage = 100f * currentBatteryAmpHours / totalBatteryAmpHours;
+
+
+
 
         //from an array of solar & batteries, take away energy one by one based on appliance needs
         totalEnergyGeneratingKW = totalEnergyGenerating / 1000f;
-        UIManager.s.totalEnergyGeneratingText.text = totalEnergyGeneratingKW.ToString("0.00") + " kWhr";
-        UIManager.s.totalEnergyStoringText.text = totalEnergyStored.ToString("0.00") + " kWhr";
-        UIManager.s.totalEnergyUsingText.text = totalEnergyUsed.ToString("0.00") + "kWhr";
+        UIManager.s.totalEnergyGeneratingText.text = totalEnergyGeneratingKW.ToString("0.00") + " kW";
+        UIManager.s.totalEnergyStoringText.text = batteryChargedPercentage.ToString("0") + " %";
+        currentACEnergyDischargeKW = currentACEnergyDischarge / 1000f;
+        UIManager.s.totalEnergyUsingText.text = currentACEnergyDischargeKW.ToString("0.00") + "kW";
         
     }
 

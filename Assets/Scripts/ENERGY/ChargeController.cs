@@ -6,6 +6,10 @@ public class ChargeController : EnergyObject
 {
     //Charge Controller's jobs are to regulate flow of energy from Generators to Batteries
 
+    public float inputVoltageMax, outputAmperageMax;
+
+    public float inputVoltage, inputAmperage, outputVoltage, outputAmperage;
+
     protected override void Update()
     {
         //regulate voltage and amperage from Generators to Batteries
@@ -23,11 +27,14 @@ public class ChargeController : EnergyObject
     }
 
     void InitiateEnergyParameters(){
-
+        inputVoltageMax = 150f;//volts
+        outputAmperageMax = 80f;//amps
     }
 
     public override void OnInitiate(ObjectInstance _objectInstance){
         //Debug.Log("Initiate")
+        InitiateEnergyParameters();
+        EnergyManager.s.chargeController = this;
         base.OnInitiate(_objectInstance);
     }
 }

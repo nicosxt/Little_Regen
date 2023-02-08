@@ -6,12 +6,10 @@ public class Appliance : EnergyObject
 {
     public bool isOn = false;
     public bool isConnecteddToEnergySource = false;
-
-    public float currentEnergyUsage = 0;
-    public float energyUsage = 1;
-
-
     public GameObject chargeIndicator;
+
+    public float currentDischargingAmperage;
+    public float dischargingAmperage;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +20,7 @@ public class Appliance : EnergyObject
     // Update is called once per frame
     protected override void Update()
     {
-        currentEnergyUsage = isOn ? energyUsage : 0;
+        currentDischargingAmperage = isOn ? dischargingAmperage : 0;
 
         base.Update();
         
@@ -34,11 +32,11 @@ public class Appliance : EnergyObject
 
     public override void OnInitiate(ObjectInstance _objectInstance){
         // Debug.Log("Initiate Appliance");
-        //isOn = true;
+        isOn = false;
 
         chargeIndicator = Instantiate(EnergyManager.s.chargeIndicatorPrefab, transform);
         chargeIndicator.transform.localPosition = new Vector3(0, -0.45f, 0);
-
+        chargeIndicator.SetActive(isOn);
         //add self to EnergyManager
         EnergyManager.s.appliances.Add(this);
         base.OnInitiate(_objectInstance);
