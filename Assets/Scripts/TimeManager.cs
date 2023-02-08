@@ -23,6 +23,7 @@ public class TimeManager : MonoBehaviour
     public float totalMinutes = 0f;
 
     public float timeScale = 1f;
+    public float finalTimeScale = 0f;
     
     public bool isSimulating = false;
 
@@ -42,12 +43,15 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         if(isSimulating){
-            fractionMinutes += Time.deltaTime * timeScale * timeMultiplier;
-            totalMinutes += Time.deltaTime * timeScale * timeMultiplier;
+            finalTimeScale = Time.deltaTime * timeScale * timeMultiplier;
+            fractionMinutes += finalTimeScale;
+            totalMinutes += finalTimeScale;
             if(fractionMinutes >= 60f){
                 totalHours += 1f;
                 fractionMinutes = 0f;
             }
+        }else{
+            finalTimeScale = 0;
         }
 
 

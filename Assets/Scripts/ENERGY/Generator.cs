@@ -17,19 +17,18 @@ public class Generator : EnergyObject
     // public bool isFirstGenerator; 
 
 
-    public float operatingVoltage, operatingAmperage, operatingEnergy;
+    public float operatingVolts, operatingAmps, operatingPower;
     
-    //when sunshine isn't sufficient, are volts and amps both proportionally affected??
-    public float currentEnergy, currentVoltage, currentAmperage;
+    //power input into the system
+    public float inputVolts, inputAmps, inputPower;
     
 
     // Update is called once per frame
     protected override void Update()
     {
-        currentEnergy = operatingEnergy * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
-        currentVoltage = operatingVoltage * (currentEnergy / operatingEnergy);
-        currentAmperage = currentEnergy / currentVoltage;
-
+        inputVolts = operatingVolts * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
+        inputAmps = operatingAmps * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
+        inputPower = inputAmps * inputVolts;
         base.Update();
     }
 
@@ -39,9 +38,9 @@ public class Generator : EnergyObject
     }
 
     void InitiateEnergyParameters(){
-        operatingVoltage = 30f;//volts
-        operatingAmperage = 8f;//amps
-        operatingEnergy = operatingVoltage * operatingAmperage;//watts
+        operatingVolts = 30f;//volts
+        operatingAmps = 8f;//amps
+        operatingPower = operatingVolts * operatingAmps;//watts
     }
 
     public override void OnInitiate(ObjectInstance _objectInstance){

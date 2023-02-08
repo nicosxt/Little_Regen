@@ -19,11 +19,11 @@ public class EnergyObject : MonoBehaviour
     //when object is 'registered' in the scene
     public virtual void OnInitiate(ObjectInstance _objectInstance){
         objectInstance = _objectInstance;
-        Debug.Log("Initiate Energy Object");
+        //Debug.Log("Initiate Energy Object");
     }
 
     public virtual void OnClick(){
-        Debug.Log("Click on Energy Object");
+        //Debug.Log("Click on Energy Object");
     }
 
     // protected virtual void InputingEnergy(float _amount){

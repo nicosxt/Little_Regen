@@ -93,7 +93,7 @@ public class CategoryScript : MonoBehaviour
         if(ObjectManager.s.currentObjectScript.objectAmountLimit != -1 && ObjectManager.s.currentObjectScript.objectAmount >= ObjectManager.s.currentObjectScript.objectAmountLimit)
             return;
 
-        Debug.Log("Prepare obj" + ObjectManager.s.currentObjectScript.objectPrefab.name);
+        //Debug.Log("Prepare obj" + ObjectManager.s.currentObjectScript.objectPrefab.name);
         GameObject newObject = Instantiate(ObjectManager.s.currentObjectScript.objectPrefab, _pos, Quaternion.identity, ObjectManager.s.transform);
 
         ObjectManager.s.currentObjectInstance = newObject.GetComponent<ObjectInstance>();

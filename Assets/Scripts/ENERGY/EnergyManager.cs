@@ -17,30 +17,25 @@ public class EnergyManager : MonoBehaviour
     [Header("All Energy is in Watts")]
     [Space(5)]
     //Generators
-    public float totalEnergyGenerating = 0;
-    float totalEnergyGeneratingKW = 0;
-    public float totalVoltsGenerating = 0;
-    public float totalAmpsGenerating = 0;
+    public float inputPower = 0;
+    float inputPowerKW = 0;
+    public float inputVolts = 0;
+    public float inputAmps = 0;
     
     //Batteries
-    public float batteryVoltage = 0;
-    public float currentBatteryAmpCharge, currentBatteryAmpDischarge;
-    public float currentBatteryEnergyDelta = 0;//charge - discharge
-    public float currentBatteryAmpHours, totalBatteryAmpHours = 0;
-    public float batteryChargedPercentage = 0;
+    public float batteryOperatingVolts = 0;
+    //Charge Controller
+    public float batteryCurrentInputAmps = 0;//charge controller amp output is battery input
+    public float batteryCurrentOutputAmps = 0;//inverter amp discharge
+    public float batteryCurrentAmpHours = 0;//accumulative amphours after calculating in and out from batteries
+    public float batteryTotalAmpHours = 0;
+    public float batteryChargedPercentage = 0;//currentAmphours / totalAmphours
+
 
     //Appliances
-    public float totalApplianceLoad = 0;//watts, before inverter converts it to AC
-    public float currentACAmps;
-    public float currentACEnergyDischarge;
-    public float currentACEnergyDischargeKW;
-    public float ACVolts = 110f;
-    
-    public float currentDCAmps;
-
-
-    // public float totalVoltsStoring = 0;
-    // public float totalAmpsStoring = 0;
+    public float operatingACVolts = 110f;
+    public float currentACAmps = 0;
+    public float dischargePower, dischargePowerKW;
 
     public float sunAmount = 0;
 
@@ -72,101 +67,78 @@ public class EnergyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!TimeManager.s.isSimulating)
-            return;
-        
 
-        //Generators
-        //assuming all energy generating objects are connected in series
-        totalEnergyGenerating = 0;
-        totalVoltsGenerating = 0;
-        totalAmpsGenerating = 0;
+        if(UIManager.s.currentMode != "Energy" || !TimeManager.s.isSimulating)
+            return;
+
+        //🌞 GENERATORS -- POWER GENERATING
+        inputVolts = 0;
         if(generators.Count > 0){
             foreach(Generator obj in generators){
-                totalEnergyGenerating += obj.currentEnergy;
-                totalVoltsGenerating += obj.currentVoltage;
+                inputVolts += obj.inputVolts;
             }
-            if(generators.Count > 0)
-                totalAmpsGenerating = generators[0].currentAmperage;
+            //in series, amps are the same
+            inputAmps = generators[0].inputAmps;
+            inputPower = inputVolts * inputAmps;
         }
 
-        //Get total voltage from Batteries
-        //this depends on the charge controller output?
-        batteryVoltage = 0;
-        totalBatteryAmpHours = 0;
+        //🔋 BATTERY -- CONFIGURATIONS
+        batteryOperatingVolts = 0;
+        batteryTotalAmpHours = 0;
         if(batteries.Count > 0){
             foreach(Battery obj in batteries){
-                batteryVoltage += obj.chargingVoltage;
-                totalBatteryAmpHours += obj.chargingAmpHours;
+                batteryOperatingVolts += obj.operatingVolts;
+                batteryTotalAmpHours += obj.totalAmpHours;
             }
         }
 
-        //⚡️🤙 Charge Controller Magic ⚡️🤙
-        if(chargeController != null){
-            chargeController.inputVoltage = totalVoltsGenerating;
-            chargeController.inputAmperage = totalAmpsGenerating;
-            chargeController.outputVoltage = batteryVoltage;
-            chargeController.outputAmperage = totalVoltsGenerating * totalAmpsGenerating / batteryVoltage;
-        }
+        //Check if Generators and Batteries are in scene
+        if(batteries.Count == 0 || generators.Count == 0)
+            return;
 
-        //current battery amperage charge is the charge controller output amperage
-        currentBatteryAmpCharge = chargeController.outputAmperage;
+        //🤙 CHARGE CONTROLLER -- battery input amps is the charge controller output amps
+        //if(chargeController != null){
+        batteryCurrentInputAmps = inputPower / batteryOperatingVolts;
+        //}
 
-        //calculating total accumulating amperage charged into the battery
-        if(currentBatteryAmpHours < totalBatteryAmpHours){
-            currentBatteryAmpHours += chargeController.outputAmperage * Time.deltaTime * TimeManager.s.timeScale * TimeManager.s.timeMultiplier / 60f;
-        }else{
-            currentBatteryAmpHours = totalBatteryAmpHours;
-        }
-
-        //⚡️🤙 Inverter Magic ⚡️🤙
-        if(inverter != null){
-            inverter.inputEnergy = batteryVoltage;
-        }
-
-        //Appliances
+        //🔌 APPLIANCES
         currentACAmps = 0;
         foreach(Appliance obj in appliances){
             currentACAmps += obj.currentDischargingAmperage;
         }
-        currentACEnergyDischarge = currentACAmps * ACVolts;
+        //Total power drawn out from the system
+        dischargePower = currentACAmps * operatingACVolts;
+        
+        //amount of amps discharged from battery
+        batteryCurrentOutputAmps = (operatingACVolts * currentACAmps) / batteryOperatingVolts;
 
-        //Get amount of amps needed from the inverter
-        //minus power of battery from inverter load
-        if(inverter != null){
-            currentDCAmps = currentACEnergyDischarge / batteryVoltage;
-            currentBatteryAmpDischarge = currentDCAmps;
+        //🔋 BATTERY -- ENERGY ACCUMULATION
+        if(batteryChargedPercentage <= 100f && batteryChargedPercentage >= 0f){
+            batteryCurrentAmpHours += (batteryCurrentInputAmps - batteryCurrentOutputAmps) * TimeManager.s.finalTimeScale;
+            batteryChargedPercentage = 100f * batteryCurrentAmpHours / batteryTotalAmpHours;
         }
+        
 
-        currentBatteryEnergyDelta = currentBatteryAmpCharge * batteryVoltage - currentACEnergyDischarge;
-        currentBatteryAmpHours += currentBatteryEnergyDelta/batteryVoltage;
-
-        //indicator for totally generating energy [POSSIBLY DEPRECATED]
-        //energyGeneratorIndicator.GetComponent<Lil_Indicator>().UpdateAmount(totalEnergyGenerating);
-
-
-
-        //Divide the load into individual batteries
-        if(batteries.Count > 0){
-            foreach(Battery obj in batteries){
-                obj.currentAmperage = currentBatteryAmpHours / batteries.Count;
-                obj.currentCapacity = obj.currentAmperage * obj.chargingVoltage;
-            }
+        
+        if(batteryChargedPercentage > 100f){
+            batteryChargedPercentage = 100f;
+            batteryCurrentAmpHours = batteryTotalAmpHours;
         }
-        batteryChargedPercentage = 100f * currentBatteryAmpHours / totalBatteryAmpHours;
-
-
-
-
+        if(batteryChargedPercentage < 0f){
+            batteryChargedPercentage = 0f;
+            batteryCurrentAmpHours = 0f;
+        }
+        
         //from an array of solar & batteries, take away energy one by one based on appliance needs
-        totalEnergyGeneratingKW = totalEnergyGenerating / 1000f;
-        UIManager.s.totalEnergyGeneratingText.text = totalEnergyGeneratingKW.ToString("0.00") + " kW";
+        inputPowerKW = inputPower / 1000f;
+        UIManager.s.totalEnergyGeneratingText.text = inputPowerKW.ToString("0.00") + " kW";
         UIManager.s.totalEnergyStoringText.text = batteryChargedPercentage.ToString("0") + " %";
-        currentACEnergyDischargeKW = currentACEnergyDischarge / 1000f;
-        UIManager.s.totalEnergyUsingText.text = currentACEnergyDischargeKW.ToString("0.00") + "kW";
+        dischargePowerKW = dischargePower / 1000f;
+        UIManager.s.totalEnergyUsingText.text = dischargePowerKW.ToString("0.00") + "kW";
         
     }
 
+    //PROBABLY DEPRECATED
     public void AddGenerator(Generator _generator){
 
         generators.Add(_generator);
@@ -177,11 +149,6 @@ public class EnergyManager : MonoBehaviour
             medianPosition += obj.transform.position;
         }
         medianPosition /= generators.Count;
-        
-        //indicator for totally generating energy [POSSIBLY DEPRECATED]
-        //energyGeneratorIndicator.SetActive(true);
-        //energyGeneratorIndicator.transform.position = medianPosition;
-        
     }
 
     public void UpdateSunAmount(float _sunAmount){
