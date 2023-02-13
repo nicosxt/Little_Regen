@@ -118,8 +118,6 @@ public class EnergyManager : MonoBehaviour
             batteryChargedPercentage = 100f * batteryCurrentAmpHours / batteryTotalAmpHours;
         }
         
-
-        
         if(batteryChargedPercentage > 100f){
             batteryChargedPercentage = 100f;
             batteryCurrentAmpHours = batteryTotalAmpHours;

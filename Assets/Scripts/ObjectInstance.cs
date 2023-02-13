@@ -87,9 +87,9 @@ public class ObjectInstance : MonoBehaviour
             energyObject.OnInitiate(this);
 
         //add yourself to ObjectManager
-        ObjectManager.s.objects.Add(this.gameObject);
+        ObjectManager.s.objectInstances.Add(this.gameObject);
         //increase object count for this type
-        ObjectManager.s.currentObjectScript.objectAmount ++;
+        ObjectManager.s.currentObjectInfo.objectAmount ++;
     }
 
     //set condition to see if object can be placed via Block logic

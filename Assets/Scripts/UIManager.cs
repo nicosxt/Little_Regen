@@ -29,10 +29,6 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Find all elements with <UIButton> in Scene
-        foreach(UIButton b in FindObjectsOfType<UIButton>()){
-            b.OnInitiate();
-        }
 
         SetCurrentMode(currentMode);
     }
@@ -44,13 +40,13 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetCurrentMode(string _name){
-        currentMode = _name;
-        foreach(Transform t in menuContainer.transform){
-            t.gameObject.SetActive(t.name == _name);
-        }
-        foreach(Transform t in modeButtonContainer.transform){
-            t.GetComponent<UIButton>().SetState(t.name == _name ? "selected" : "default");
-        }
+        // currentMode = _name;
+        // foreach(Transform t in menuContainer.transform){
+        //     t.gameObject.SetActive(t.name == _name);
+        // }
+        // foreach(Transform t in modeButtonContainer.transform){
+        //     t.GetComponent<UIButton>().SetState(t.name == _name ? "selected" : "default");
+        // }
         //foreach()
     }
 

@@ -94,8 +94,8 @@ public class BlockManager : MonoBehaviour
 
     public void HoverOnBlocks(Collider _blockCollider){
         hoveredBlock = _blockCollider.transform.parent.GetComponent<Block>();
-        hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX +  ObjectManager.s.currentObjectScript.objectSize.x - 1);
-        hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ -  ObjectManager.s.currentObjectScript.objectSize.z + 1);
+        hoveredBlockRangeX = new Vector2(hoveredBlock.indexX, hoveredBlock.indexX +  ObjectManager.s.currentObjectInfo.objectSize.x - 1);
+        hoveredBlockRangeZ = new Vector2(hoveredBlock.indexZ, hoveredBlock.indexZ -  ObjectManager.s.currentObjectInfo.objectSize.z + 1);
 
         if(hoveredBlockRangeX.y >= blockAmountX || hoveredBlockRangeZ.y < 0){
             isHoverWithinBoundry = false;
@@ -173,7 +173,7 @@ public class BlockManager : MonoBehaviour
 
     public void OnPlaceObject(){
         foreach(Block block in hoveredBlocks){
-            block.containedObject = ObjectManager.s.currentObjectScript.gameObject;
+            block.containedObject = ObjectManager.s.currentObjectInfo.gameObject;
         }
     }
 }

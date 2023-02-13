@@ -92,7 +92,7 @@ public class Manipulator : MonoBehaviour
 
     void HoverOnGround(){
 
-        if(!ObjectManager.s.currentObjectScript.IsAvailable()){
+        if(!ObjectManager.s.currentObjectInfo.IsAvailable()){
             isHoldingObject = false;
             return;
         }
@@ -139,7 +139,7 @@ public class Manipulator : MonoBehaviour
         // textX.SetActive(true);
 
         //this function also passes value to currentObjectInstance
-        CategoryManager.s.currentCategory.PrepareObject(_pos);
+        ObjectManager.s.PrepareObject(_pos);
     }
 
     void OnHoverEnd(){
@@ -182,12 +182,12 @@ public class Manipulator : MonoBehaviour
 
         //Debug.Log("Clicking on block");
 
-        if(ObjectManager.s.currentObjectScript.IsAvailable()){
+        if(ObjectManager.s.currentObjectInfo.IsAvailable()){
             ObjectManager.s.currentObjectInstance.PlaceObject();
             ObjectManager.s.currentObjectInstance = null;
             BlockManager.s.OnPlaceObject();
             //place this object & spawn the next one
-            CategoryManager.s.currentCategory.PrepareObject(hoverPositionOnBlocks);
+            ObjectManager.s.PrepareObject(hoverPositionOnBlocks);
         }else{
             ObjectManager.s.currentObjectInstance = null;
         }
