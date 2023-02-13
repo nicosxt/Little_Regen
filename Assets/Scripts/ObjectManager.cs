@@ -27,6 +27,9 @@ public class ObjectManager : MonoBehaviour
     //Current
     public ObjectInfo currentObjectInfo;
     public ObjectInstance currentObjectInstance;
+    
+    //Debug
+    public GameObject debugObject;
 
     public void Start(){
         //Initiate Object Info
@@ -37,15 +40,16 @@ public class ObjectManager : MonoBehaviour
                 objectInfos.Add(o);
             }
         }
-        Debug.Log("Object Info Count " + objectInfos.Count);
+        //Debug.Log("Object Info Count " + objectInfos.Count);
         for(int i=0; i<objectInfos.Count; i++){
             objectInfos[i].SetState((i==0) ? "selected" : "default");
         }
         SetCurrentObjectInfo(objectInfos[0]);
+        //Debug.Log(currentObjectInfo.objectName);
     }
 
     public void SetCurrentObjectInfo(ObjectInfo _o){
-        Debug.Log("set current object info " + _o.objectName);
+        //Debug.Log("set current object info " + _o.objectName);
         currentObjectInfo = _o;
     }
 

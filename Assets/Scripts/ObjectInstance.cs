@@ -23,30 +23,21 @@ public class ObjectInstance : MonoBehaviour
     public bool hasOneGroup = false;
     public bool isFirstInGroup = false;
 
-    //temporary obsolete!
-    public GameObject boundPosition;
-    public Vector3 boundOffset;
+    //get bounds positions
+    public Vector2 boundPosX = new Vector2(0,0);
+    public Vector2 boundPosZ = new Vector2(0,0);
+    
+
+    public List<GameObject> debugObjects = new List<GameObject>();
+
 
     //enable object while hovering
     public void OnEnable(){
 
-        //Generator and Batteries would result in hasOneGroup to be true
-
         if(GetComponent<EnergyObject>()){
             energyObject = GetComponent<EnergyObject>();
             energyObject.OnEnable();
-
-            //conditions for objects that needs to be grouped [PROBABLY DEPRECATED]
-            // if(GetComponent<Battery>()){
-            //     hasOneGroup = true;
-            //     isFirstInGroup = (EnergyManager.s.batteries.Count == 0);
-            // }else if(GetComponent<Generator>()){
-            //     hasOneGroup = true;
-            //     isFirstInGroup = (EnergyManager.s.generators.Count == 0);
-            // }
         }
-
-
 
         objectMeshRenderers = transform.GetComponentsInChildren<MeshRenderer>();
 
@@ -68,7 +59,27 @@ public class ObjectInstance : MonoBehaviour
         //set material
         SetMaterial("pending");
 
+        //format name
         name += ObjectManager.s.transform.childCount.ToString();
+
+
+        // //creates debugObject at bounds position
+        // GetBoundsPosition();
+
+        // GameObject debugObj1 = Instantiate(ObjectManager.s.debugObject, new Vector3(boundPosX.x, 0, boundPosZ.x), Quaternion.identity, transform);
+        // debugObj1.name = "x1_z1";
+        // debugObjects.Add(debugObj1);
+        // GameObject debugObj2 = Instantiate(ObjectManager.s.debugObject, new Vector3(boundPosX.x, 0, boundPosZ.y), Quaternion.identity, transform);
+        // debugObj2.name = "x1_z2";
+        // debugObjects.Add(debugObj2);
+        // GameObject debugObj3 = Instantiate(ObjectManager.s.debugObject, new Vector3(boundPosX.y, 0, boundPosZ.x), Quaternion.identity, transform);
+        // debugObj3.name = "x2_z1";
+        // debugObjects.Add(debugObj3);
+        // GameObject debugObj4 = Instantiate(ObjectManager.s.debugObject, new Vector3(boundPosX.y, 0, boundPosZ.y), Quaternion.identity, transform);
+        // debugObj4.name = "x2_z2";
+        // debugObjects.Add(debugObj4);
+        
+
 
 
     }
@@ -90,6 +101,22 @@ public class ObjectInstance : MonoBehaviour
         ObjectManager.s.objectInstances.Add(this.gameObject);
         //increase object count for this type
         ObjectManager.s.currentObjectInfo.objectAmount ++;
+    }
+
+    void GetBoundsPosition(){
+        Bounds worldBounds = GetCollider().bounds;
+        Vector3 center = worldBounds.center;
+        Vector3 extents = worldBounds.extents;
+        boundPosX = new Vector2(center.x - extents.x, center.x + extents.x);
+        boundPosZ = new Vector2(center.z - extents.z, center.z + extents.z);
+    }
+
+    Collider GetCollider(){
+        if(GetComponent<Collider>()){
+            return GetComponent<Collider>();
+        }else{
+            return GetComponentInChildren<Collider>();
+        }
     }
 
     //set condition to see if object can be placed via Block logic

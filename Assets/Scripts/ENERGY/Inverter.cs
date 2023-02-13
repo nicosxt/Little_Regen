@@ -9,8 +9,16 @@ public class Inverter : EnergyObject
     public float outputAmperage;
     public float inverterLoad = 30f;//watts needed to run the inverter
 
+    [Header("__Circuitry Wizardry__")]
+    public Connector positiveInputConnector;
+    public Connector negativeInputConnector, outputPlug;
+
     public override void OnInitiate(ObjectInstance _objectInstance){
         //Debug.Log("Initiate")
+        positiveInputConnector.OnInitiate(this, _objectInstance);
+        negativeInputConnector.OnInitiate(this, _objectInstance);
+        outputPlug.OnInitiate(this, _objectInstance);
+
         InitiateEnergyParameters();
         EnergyManager.s.inverter = this;
         base.OnInitiate(_objectInstance);

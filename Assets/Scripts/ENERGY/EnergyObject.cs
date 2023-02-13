@@ -5,7 +5,6 @@ using TMPro;
 
 public class EnergyObject : MonoBehaviour
 {
-    [Header("All Energy is in KiloWatts")]
     public string name;
 
     //reference to ObjectInstance script

@@ -11,6 +11,9 @@ public class Appliance : EnergyObject
     public float currentDischargingAmperage;
     public float dischargingAmperage;
 
+    [Header("__Circuitry Wizardry__")]
+    public Connector connector;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,9 @@ public class Appliance : EnergyObject
     public override void OnInitiate(ObjectInstance _objectInstance){
         // Debug.Log("Initiate Appliance");
         isOn = false;
+
+        //initiate connectors
+        connector.OnInitiate(this, _objectInstance);
 
         chargeIndicator = Instantiate(EnergyManager.s.chargeIndicatorPrefab, transform);
         chargeIndicator.transform.localPosition = new Vector3(0, -0.45f, 0);

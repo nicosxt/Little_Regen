@@ -10,6 +10,10 @@ public class ChargeController : EnergyObject
 
     public float inputVoltage, inputAmperage, outputVoltage, outputAmperage;
 
+    [Header("__Circuitry Wizardry__")]
+    public Connector positiveInputConnector;
+    public Connector negativeInputConnector, positiveOutputConnector, negativeOutputConnector;
+
     protected override void Update()
     {
         //regulate voltage and amperage from Generators to Batteries
@@ -33,6 +37,13 @@ public class ChargeController : EnergyObject
 
     public override void OnInitiate(ObjectInstance _objectInstance){
         //Debug.Log("Initiate")
+
+        //initiate connectors
+        positiveInputConnector.OnInitiate(this, _objectInstance);
+        negativeInputConnector.OnInitiate(this, _objectInstance);
+        positiveOutputConnector.OnInitiate(this, _objectInstance);
+        negativeOutputConnector.OnInitiate(this, _objectInstance);
+
         InitiateEnergyParameters();
         EnergyManager.s.chargeController = this;
         base.OnInitiate(_objectInstance);

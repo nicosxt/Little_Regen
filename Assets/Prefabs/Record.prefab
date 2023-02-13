@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 3958318998921802178}
   - component: {fileID: 618608364}
   m_Layer: 7
-  m_Name: Record_TOON
+  m_Name: Record
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,8 +156,9 @@ MonoBehaviour:
   energyObject: {fileID: 0}
   hasOneGroup: 0
   isFirstInGroup: 0
-  boundPosition: {fileID: 0}
-  boundOffset: {x: 0, y: 0, z: 0}
+  boundPosX: {x: 0, y: 0}
+  boundPosZ: {x: 0, y: 0}
+  debugObjects: []
 --- !u!114 &618608364
 MonoBehaviour:
   m_ObjectHideFlags: 0

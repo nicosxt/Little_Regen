@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class Manipulator : MonoBehaviour
 {
@@ -18,8 +19,21 @@ public class Manipulator : MonoBehaviour
     }
     //public GameObject marker;
     public Camera camera;
-    public GameObject measureX, measureZ, textX, textZ, centerX, centerZ;
-    public TextMeshPro measureXText, measureZText;
+    
+    //2d to 3d switch
+    public Button perspectiveSwitchButton;
+    public Vector3 cameraPos3D, cameraPos2D, cameraRot3D, cameraRot2D;
+    public float cameraSize3D, cameraSize2D;
+    public bool isCamera2D;
+
+
+    //design, use
+    public string currentMode = "design";
+
+    
+    //measurements
+    // public GameObject measureX, measureZ, textX, textZ, centerX, centerZ;
+    // public TextMeshPro measureXText, measureZText;
     //public float heightOffset = 0.12f;
 
     public Vector3 hoverPositionOnBlocks, boundPosition;
@@ -28,21 +42,31 @@ public class Manipulator : MonoBehaviour
     public bool isHoldingObject = false;
 
     //Snap related
-    public float snapRange = 3f;
+    // public float snapRange = 3f;
 
     //Hover related
     public GameObject hoveringObject;
     public Vector3 hoveringPosition;
     Vector2 mousePos;
     Vector3 worldPos;
+    //Globally accessible Ray (for Mouse action for now)
+    public Ray mouseRay;
 
     //Placing Conditiopn
     public bool canPlace = false;
 
+    //Energy Related
+
     // Start is called before the first frame update
     void Start()
     {
+        perspectiveSwitchButton.onClick.AddListener(ToggleCamera);
         inputActions.Default.Click.canceled += OnClick;
+        cameraPos3D = camera.transform.position;
+        cameraRot3D = camera.transform.eulerAngles;
+        cameraPos2D = new Vector3(12.2f, 22.7f, 8.1f);
+        cameraRot2D = new Vector3(90f, 0f, 0f);
+        cameraSize2D = 16.1f;
     }
 
     void OnEnable() {
@@ -61,20 +85,36 @@ public class Manipulator : MonoBehaviour
         mousePos = Mouse.current.position.ReadValue();
         worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
 
-        
+        //Update Ray for everybody
+        mouseRay = new Ray(worldPos, camera.transform.forward);
 
-        if(UIManager.s.currentMode == "Place"){
+        if(currentMode == "design"){
             HoverOnGround();
-        }else if(UIManager.s.currentMode == "Energy"){
+        }else if(currentMode == "use"){
             HoverOnObjects();
         }
         
     }
 
+    public void ToggleCamera(){
+        perspectiveSwitchButton.GetComponentInChildren<TextMeshProUGUI>().text = isCamera2D ? "3D" : "2D";
+        if(isCamera2D){
+            LerpCamera(cameraPos3D, cameraRot3D);
+        }else{
+            LerpCamera(cameraPos2D, cameraRot2D);
+        }
+        camera.orthographicSize = isCamera2D ? cameraSize3D : cameraSize2D;
+        isCamera2D = !isCamera2D;
+    }
+
+    void LerpCamera(Vector3 _pos, Vector3 _rot){
+        camera.transform.position = _pos;
+        camera.transform.eulerAngles = _rot;
+    }
+
     void HoverOnObjects(){
-        Ray ray = new Ray(worldPos, camera.transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1000f, 1 << 7))
+        if (Physics.Raycast(mouseRay, out hit, 1000f, 1 << 7))
         {
             hoveringObject = hit.collider.gameObject;
             //Debug.Log(hit.collider.name);
@@ -96,13 +136,10 @@ public class Manipulator : MonoBehaviour
             isHoldingObject = false;
             return;
         }
-            
 
-
-        Ray ray = new Ray(worldPos, camera.transform.forward);
         RaycastHit hit;
         //Check if it's hitting on the Block Layer  (layer 8)
-        if (Physics.Raycast(ray, out hit, 1000f, 1 << 8))
+        if (Physics.Raycast(mouseRay, out hit, 1000f, 1 << 8))
         {
 
             //check with blocks
@@ -156,24 +193,29 @@ public class Manipulator : MonoBehaviour
     }
 
     void UpdateMeasurements(Vector3 _pos){
-        boundPosition = _pos - ObjectManager.s.currentObjectInstance.boundOffset;
-        measureX.transform.position = new Vector3(_pos.x, 0, 0);
-        measureZ.transform.position = new Vector3(0, 0, _pos.z);
-        measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
-        measureX.transform.localScale = new Vector3(1, 1, boundPosition.z);
+        // boundPosition = _pos - ObjectManager.s.currentObjectInstance.boundOffset;
+        // measureX.transform.position = new Vector3(_pos.x, 0, 0);
+        // measureZ.transform.position = new Vector3(0, 0, _pos.z);
+        // measureZ.transform.localScale = new Vector3(1, 1, boundPosition.x);
+        // measureX.transform.localScale = new Vector3(1, 1, boundPosition.z);
 
-        textX.transform.position = centerX.transform.position;
-        textZ.transform.position = centerZ.transform.position;
-        measureXText.SetText(boundPosition.x.ToString("0.00") + "m");
-        measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
+        // textX.transform.position = centerX.transform.position;
+        // textZ.transform.position = centerZ.transform.position;
+        // measureXText.SetText(boundPosition.x.ToString("0.00") + "m");
+        // measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
     }
 
     void OnClick(InputAction.CallbackContext context){
 
+        //Debug.Log("Clicking manipulator");
         //If hovering on Object
         if(hoveringObject){
             hoveringObject.GetComponent<EnergyObject>().OnClick();
             Debug.Log("Click");
+        }
+
+        if(currentMode == "use"){
+            EnergyManager.s.OnClick();
         }
         
         //Clickong on Ground

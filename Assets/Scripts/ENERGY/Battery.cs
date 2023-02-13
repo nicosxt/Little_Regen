@@ -6,6 +6,7 @@ using TMPro;
 
 public class Battery : EnergyObject
 {
+
     //additional parameters
     public float operatingVolts;//this doesn't change
     public float operatingAmpsMax;
@@ -15,6 +16,9 @@ public class Battery : EnergyObject
     
     bool isCharging;
 
+    [Header("__Circuitry Wizardry__")]
+    public Connector positiveConnector;
+    public Connector negativeConnector;
 
     public override void OnEnable(){
         base.OnEnable();
@@ -22,6 +26,11 @@ public class Battery : EnergyObject
     
     public override void OnInitiate(ObjectInstance _objectInstance){
         isCharging = false;
+
+        //initiate connectors
+        positiveConnector.OnInitiate(this, _objectInstance);
+        negativeConnector.OnInitiate(this, _objectInstance);
+
         InitiateEnergyParameters();
         // Debug.Log("Initiate Battery");
         EnergyManager.s.batteries.Add(this);

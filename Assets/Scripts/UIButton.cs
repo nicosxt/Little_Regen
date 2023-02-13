@@ -8,6 +8,7 @@ public class UIButton : MonoBehaviour
     public Button button;
     public Image[] images;
     public Text[] texts;
+    public string state = "default";
     
     public void Start()
     {
@@ -15,6 +16,7 @@ public class UIButton : MonoBehaviour
         button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         texts = GetComponentsInChildren<Text>();
+        SetState(state);
     }
 
     // Update is called once per frame

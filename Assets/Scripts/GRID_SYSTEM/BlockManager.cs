@@ -64,6 +64,7 @@ public class BlockManager : MonoBehaviour
 
         InstantiateBlocks();
         camera.orthographicSize = landWidth * 0.36f;
+        Manipulator.s.cameraSize3D = camera.orthographicSize;
         // inputActions.Default.Click.canceled += ClickOnBlock;
     }
 

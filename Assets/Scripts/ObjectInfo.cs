@@ -50,7 +50,12 @@ public class ObjectInfo : MonoBehaviour {
     }
 
     public void SetState(string _s){
-        //Debug.Log(name + "setting state " + _s);
+        
+        if(!uiButton){
+            uiButton = GetComponent<UIButton>();
+        }
+
+        //Debug.Log("UIButton is " + uiButton);
         currentState = _s;
         if(_s == "default"){
             uiButton.SetState("default");
