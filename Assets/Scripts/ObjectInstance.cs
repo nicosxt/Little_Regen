@@ -94,8 +94,10 @@ public class ObjectInstance : MonoBehaviour
         objectStatus = "placed";
         SetMaterial("placed");
 
-        if(energyObject)
+        if(energyObject){
             energyObject.OnInitiate(this);
+        }
+            
 
         //add yourself to ObjectManager
         ObjectManager.s.objectInstances.Add(this.gameObject);
@@ -149,34 +151,34 @@ public class ObjectInstance : MonoBehaviour
         }
     }
 
-    public bool CanPlaceObject(){
-        //check if is Next To Previous Grouped Object
-        if(energyObject && hasOneGroup && !isFirstInGroup){
-            if(energyObject is Battery){
-                float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.x);
-                float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.z);
-                if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
-                    //is next to the previous block
-                    return true;
-                }else{
-                    return false;
-                }
-            }else if(energyObject is Generator){
-                float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.x);
-                float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.z);
-                if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
-                    //is next to the previous block
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
-            }
-        }else{
-            return true;
-        }
-    }
+    // public bool CanPlaceObject(){
+    //     //check if is Next To Previous Grouped Object
+    //     if(energyObject && hasOneGroup && !isFirstInGroup){
+    //         if(energyObject is Battery){
+    //             float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.x);
+    //             float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.batteries[EnergyManager.s.batteries.Count - 1].transform.position.z);
+    //             if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
+    //                 //is next to the previous block
+    //                 return true;
+    //             }else{
+    //                 return false;
+    //             }
+    //         }else if(energyObject is Generator){
+    //             float xDiff = Mathf.Abs(transform.position.x - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.x);
+    //             float zDiff = Mathf.Abs(transform.position.z - EnergyManager.s.generators[EnergyManager.s.generators.Count - 1].transform.position.z);
+    //             if(xDiff <= BlockManager.s.blockSize && zDiff <= BlockManager.s.blockSize){
+    //                 //is next to the previous block
+    //                 return true;
+    //             }else{
+    //                 return false;
+    //             }
+    //         }else{
+    //             return true;
+    //         }
+    //     }else{
+    //         return true;
+    //     }
+    // }
 
 
 }

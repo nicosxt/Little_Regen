@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ChargeController : EnergyObject
 {
@@ -9,6 +10,7 @@ public class ChargeController : EnergyObject
     public float inputVoltageMax, outputAmperageMax;
 
     public float inputVoltage, inputAmperage, outputVoltage, outputAmperage;
+    public TextMeshPro inputVoltsText, inputAmpsText, outputVoltsText, outputAmpsText;
 
     [Header("__Circuitry Wizardry__")]
     public Connector positiveInputConnector;
@@ -16,12 +18,6 @@ public class ChargeController : EnergyObject
 
     protected override void Update()
     {
-        //regulate voltage and amperage from Generators to Batteries
-        //if voltage is too high, it will be reduced
-        //charingAmperage = (solar) totalEnergyGenerating / (battery)chargingVoltage
-        //how many hours to charge battery = (battery) ampHours * chargingVoltage / (solar) totalEnergyGenerating
-
-
         base.Update();
     }
 
@@ -33,6 +29,18 @@ public class ChargeController : EnergyObject
     void InitiateEnergyParameters(){
         inputVoltageMax = 150f;//volts
         outputAmperageMax = 80f;//amps
+    }
+
+    public void UpdateData(){
+        inputVoltage = EnergyManager.s.inputVolts;
+        inputAmperage = EnergyManager.s.inputAmps;
+        outputVoltage = EnergyManager.s.batteryOperatingVolts;
+        outputAmperage = EnergyManager.s.batteryCurrentInputAmps;
+        
+        inputVoltsText.text = "In: " + inputVoltage.ToString("F2") + "V";
+        inputAmpsText.text = "In: " + inputAmperage.ToString("F2") + "A";
+        outputVoltsText.text = "Out: " + outputVoltage.ToString("F2") + "V";
+        outputAmpsText.text = "Out: " + outputAmperage.ToString("F2") + "A";
     }
 
     public override void OnInitiate(ObjectInstance _objectInstance){
@@ -47,5 +55,13 @@ public class ChargeController : EnergyObject
         InitiateEnergyParameters();
         EnergyManager.s.chargeController = this;
         base.OnInitiate(_objectInstance);
+    }
+
+    public override void ToggleConnectors(bool _on){
+        positiveInputConnector.gameObject.SetActive(_on);
+        negativeInputConnector.gameObject.SetActive(_on);
+        positiveOutputConnector.gameObject.SetActive(_on);
+        negativeOutputConnector.gameObject.SetActive(_on);
+        base.ToggleConnectors(_on);
     }
 }

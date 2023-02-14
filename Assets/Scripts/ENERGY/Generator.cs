@@ -11,6 +11,7 @@ public class Generator : EnergyObject
     
     //power input into the system
     public float inputVolts, inputAmps, inputPower;
+    public TextMeshPro inputVoltsText, inputAmpsText, inputPowerText;
   
     [Header("__Circuitry Wizardry__")]
     public Connector positiveConnector;
@@ -22,6 +23,9 @@ public class Generator : EnergyObject
         inputVolts = operatingVolts * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
         inputAmps = operatingAmps * EnergyManager.s.generatorEnergyLoss * EnergyManager.s.sunAmount;
         inputPower = inputAmps * inputVolts;
+        inputVoltsText.text = inputVolts.ToString("F2") + "V";
+        inputAmpsText.text = inputAmps.ToString("F2") + "A";
+        inputPowerText.text = (inputPower / 1000f).ToString("F2") + "kW";
         base.Update();
     }
 
@@ -43,5 +47,11 @@ public class Generator : EnergyObject
 
         EnergyManager.s.AddGenerator(this);
         base.OnInitiate(_objectInstance);
+    }
+
+    public override void ToggleConnectors(bool _on){
+        positiveConnector.gameObject.SetActive(_on);
+        negativeConnector.gameObject.SetActive(_on);
+        base.ToggleConnectors(_on);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Appliance : EnergyObject
 {
@@ -9,6 +10,7 @@ public class Appliance : EnergyObject
     public GameObject chargeIndicator;
 
     public float currentDischargingAmperage;
+    public TextMeshPro dischargeAmpsText;
     public float dischargingAmperage;
 
     [Header("__Circuitry Wizardry__")]
@@ -25,6 +27,7 @@ public class Appliance : EnergyObject
     {
         currentDischargingAmperage = isOn ? dischargingAmperage : 0;
 
+        dischargeAmpsText.text = currentDischargingAmperage.ToString("F2") + "A";
         base.Update();
         
     }
@@ -56,5 +59,10 @@ public class Appliance : EnergyObject
 
     public override void OnClick(){
         FlipSwitch();
+    }
+
+    public override void ToggleConnectors(bool _on){
+        connector.gameObject.SetActive(_on);
+        base.ToggleConnectors(_on);
     }
 }

@@ -46,6 +46,7 @@ public class Manipulator : MonoBehaviour
 
     //Hover related
     public GameObject hoveringObject;
+    public EnergyObject hoveringEnergyObject;
     public Vector3 hoveringPosition;
     Vector2 mousePos;
     Vector3 worldPos;
@@ -121,11 +122,14 @@ public class Manipulator : MonoBehaviour
 
             if(hit.collider.GetComponent<EnergyObject>()){
                 hoveringObject = hit.collider.gameObject;
+                hoveringEnergyObject = hoveringObject.GetComponent<EnergyObject>();
             }else if (hit.collider.GetComponentInParent<EnergyObject>()){
                 hoveringObject = hit.collider.transform.parent.gameObject;
+                hoveringEnergyObject = hoveringObject.GetComponent<EnergyObject>();
             }
         }else{
             hoveringObject = null;
+            hoveringEnergyObject = null;
         }
 
     }
@@ -156,8 +160,7 @@ public class Manipulator : MonoBehaviour
 
                 //check if blocks are empty + within boundry
                 //and check if object doesn't have placing constraints
-                canPlace = BlockManager.s.CheckIfCanPlaceObject() && 
-                ObjectManager.s.currentObjectInstance.CanPlaceObject();
+                canPlace = BlockManager.s.CheckIfCanPlaceObject();
 
                 BlockManager.s.SetBlockPlacingCondition(canPlace);
                 ObjectManager.s.currentObjectInstance.SetPlacingCondition(canPlace);

@@ -10,9 +10,11 @@ public class Battery : EnergyObject
     //additional parameters
     public float operatingVolts;//this doesn't change
     public float operatingAmpsMax;
-    public float totalAmpHours;
+    public float operatingAmpHours;
 
-    public float inputAmps;//current amperage, if larger than max, battery explodes
+    public TextMeshPro operatingVoltsText, inputAmpsText, currentPowerText;
+
+    public float inputAmps, currentPower;//current amperage, if larger than max, battery explodes
     
     bool isCharging;
 
@@ -32,6 +34,9 @@ public class Battery : EnergyObject
         negativeConnector.OnInitiate(this, _objectInstance);
 
         InitiateEnergyParameters();
+
+        operatingVoltsText.text = operatingVolts.ToString("F2") + "V";
+
         // Debug.Log("Initiate Battery");
         EnergyManager.s.batteries.Add(this);
         base.OnInitiate(_objectInstance);
@@ -39,7 +44,7 @@ public class Battery : EnergyObject
 
     void InitiateEnergyParameters(){
         operatingVolts = 14.4f;//volts
-        totalAmpHours = 200f;
+        operatingAmpHours = 200f;
         operatingAmpsMax = 100f;//amps
 
     }
@@ -47,8 +52,22 @@ public class Battery : EnergyObject
     // Update is called once per frame
     protected override void Update()
     {
+        
 
         base.Update();
+    }
+
+    public void UpdateData(float _currentamps){
+        inputAmps = _currentamps;
+        currentPower = inputAmps * operatingVolts;
+        inputAmpsText.text = inputAmps.ToString("F2") + "A";
+        currentPowerText.text = (inputAmps * operatingVolts).ToString("F2") + "W";
+    }
+
+    public override void ToggleConnectors(bool _on){
+        positiveConnector.gameObject.SetActive(_on);
+        negativeConnector.gameObject.SetActive(_on);
+        base.ToggleConnectors(_on);
     }
 
 }

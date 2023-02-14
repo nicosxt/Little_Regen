@@ -45,6 +45,9 @@ public class EnergyManager : MonoBehaviour
     public float dischargePower, dischargePowerKW;
     public List<Appliance> appliances = new List<Appliance>();
 
+    [Header("__EnergyObjects__")]
+    public List<EnergyObject> energyObjects = new List<EnergyObject>();
+
     [Header("__Environment__")]
     public float sunAmount = 0;
 
@@ -57,6 +60,7 @@ public class EnergyManager : MonoBehaviour
     public GameObject connectorPrefab;
     public GameObject wirePrefab;
     public Connector currentConnector, previousConnector;
+    public Color buttonSelectedColor, buttonConnectedColor;
 
 
     // Start is called before the first frame update
@@ -88,7 +92,8 @@ public class EnergyManager : MonoBehaviour
                 hit.transform.parent.GetComponent<Connector>().OnClick();
                 currentConnector = hit.transform.parent.GetComponent<Connector>();
                 
-                if(previousConnector == null){
+                if(previousConnector == null && currentConnector != null){
+                    currentConnector.SetState("selected");
                     previousConnector = currentConnector;
                 }else if(previousConnector != currentConnector){
                     //Connect 2 connectors
@@ -96,6 +101,8 @@ public class EnergyManager : MonoBehaviour
                     newWire.GetComponent<Wire>().connectorFrom = previousConnector;
                     newWire.GetComponent<Wire>().connectorTo = currentConnector;
                     newWire.GetComponent<Wire>().SetWire();
+                    previousConnector.SetState("connected");
+                    currentConnector.SetState("connected");
                     previousConnector = null;
                     currentConnector = null;
                 }
@@ -117,22 +124,22 @@ public class EnergyManager : MonoBehaviour
         }
         UpdateUIInputPower();
 
-        if(batteries.Count != 0){
+        if(batteries.Count > 0){
 
             //🔋 BATTERY -- CONFIGURATIONS
             batteryOperatingVolts = 0;
             batteryTotalAmpHours = 0;
-            if(batteries.Count > 0){
-                foreach(Battery obj in batteries){
-                    batteryOperatingVolts += obj.operatingVolts;
-                    batteryTotalAmpHours += obj.totalAmpHours;
-                }
+
+            foreach(Battery obj in batteries){
+                batteryOperatingVolts += obj.operatingVolts;
+                batteryTotalAmpHours += obj.operatingAmpHours;
             }
 
             //🤙 CHARGE CONTROLLER -- battery input amps is the charge controller output amps
-            //if(chargeController != null){
             batteryCurrentInputAmps = inputPower / batteryOperatingVolts;
-            //}
+            //UpdateChargeController
+            if(chargeController != null)
+               chargeController.UpdateData();
             
         }
 
@@ -163,6 +170,16 @@ public class EnergyManager : MonoBehaviour
             batteryChargedPercentage = 0f;
             batteryCurrentAmpHours = 0f;
         }
+        //updating individual batteries
+        if(batteries.Count > 0){
+            foreach(Battery obj in batteries){
+                obj.UpdateData(batteryCurrentAmpHours / batteries.Count);
+            }
+        }
+
+        //update inverter
+        if(inverter)
+            inverter.UpdateData();
         
         //from an array of solar & batteries, take away energy one by one based on appliance needs
         UpdateUIBatteryChargedPercentage();

@@ -44,6 +44,11 @@ public class UIManager : MonoBehaviour
         Manipulator.s.currentMode = _name;
         sidebarContainer.SetActive(_name == "design");
 
+        //toggle connectors on all EnergyObjects 
+        // foreach(EnergyObject energyObject in EnergyManager.s.energyObjects){
+        //     energyObject.ToggleConnectors(_name == "use");
+        // }
+
     }
 
     public void ToggleUseMode(){
