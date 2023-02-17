@@ -11,7 +11,7 @@ public class ObjectInstance : MonoBehaviour
     public string objectStatus = "pending";
 
     //changing materials
-    public MeshRenderer[] objectMeshRenderers;
+    public Renderer[] objectMeshRenderers;
 
     public List<RendererMaterialPair> rendererMaterialPairs = new List<RendererMaterialPair>();
 
@@ -20,6 +20,7 @@ public class ObjectInstance : MonoBehaviour
 
     //if true, every object can only be spawned next to the first object
     public EnergyObject energyObject;
+    public Person person;
     public bool hasOneGroup = false;
     public bool isFirstInGroup = false;
 
@@ -39,19 +40,24 @@ public class ObjectInstance : MonoBehaviour
             energyObject.OnEnable();
         }
 
-        objectMeshRenderers = transform.GetComponentsInChildren<MeshRenderer>();
+        if(GetComponent<Person>()){
+            person = GetComponent<Person>();
+            person.OnEnable();
+        }
 
-        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+        objectMeshRenderers = transform.GetComponentsInChildren<Renderer>();
+
+        foreach(Renderer objectMeshRenderer in objectMeshRenderers){
             if(objectMeshRenderer.GetComponent<TextMeshPro>()){
                 //remove objectMeshRenderer if it is TextMeshPro
-                List<MeshRenderer> temp = new List<MeshRenderer>(objectMeshRenderers);
+                List<Renderer> temp = new List<Renderer>(objectMeshRenderers);
                 temp.Remove(objectMeshRenderer);
                 objectMeshRenderers = temp.ToArray();
             }
         }
 
         //document original materials
-        foreach(MeshRenderer objectMeshRenderer in objectMeshRenderers){
+        foreach(Renderer objectMeshRenderer in objectMeshRenderers){
             rendererMaterialPairs.Add(new RendererMaterialPair(objectMeshRenderer));
             
         }
@@ -96,6 +102,10 @@ public class ObjectInstance : MonoBehaviour
 
         if(energyObject){
             energyObject.OnInitiate(this);
+        }
+
+        if(person){
+            person.OnInitiate(this);
         }
             
 
@@ -185,12 +195,12 @@ public class ObjectInstance : MonoBehaviour
 
 [Serializable]
 public class RendererMaterialPair{
-    public MeshRenderer renderer;
+    public Renderer renderer;
     public Material[] materials;
     public Material[] pendingMaterials;
     public Material[] errorMaterials;
 
-    public RendererMaterialPair(MeshRenderer _renderer){
+    public RendererMaterialPair(Renderer _renderer){
 
         List<Material> pendingMaterialsList = new List<Material>();
         List<Material> errorMaterialsList = new List<Material>();

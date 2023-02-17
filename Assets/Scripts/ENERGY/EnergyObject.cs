@@ -16,7 +16,7 @@ public class EnergyObject : MonoBehaviour
     public virtual void OnEnable(){
         name = gameObject.name;
         ToggleConnectors(false);
-        ToggleIndicators(true);
+        //ToggleIndicators(true);
     }
 
     //when object is 'registered' in the scene
@@ -36,7 +36,8 @@ public class EnergyObject : MonoBehaviour
     }
 
     public virtual void ToggleIndicators(bool _on){
-        indicator.SetActive(_on);
+        if(indicator)
+            indicator.SetActive(_on);
     }
 
     // protected virtual void InputingEnergy(float _amount){
@@ -48,7 +49,8 @@ public class EnergyObject : MonoBehaviour
     // }
 
     protected virtual void Update(){
-        // indicator.SetActive(this == Manipulator.s.hoveringEnergyObject);
+        if(indicator)
+            indicator.SetActive(this == Manipulator.s.hoveringEnergyObject);
     }
 
     // protected void SetPlacingConstraints(bool _hasConstraints){

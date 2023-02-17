@@ -8,7 +8,6 @@ public class ObjectInfo : MonoBehaviour {
     public GameObject objectPrefab;
     public string objectCategory;
     public string objectName;
-    public int objectIndex;
     public Button button;
     public UIButton uiButton;
     public Text text;
@@ -43,7 +42,7 @@ public class ObjectInfo : MonoBehaviour {
     }
 
     public void OnUIButtonClick(){
-        Debug.Log("OnUIButtonClick " + name);
+        //Debug.Log("OnUIButtonClick " + name);
         ObjectManager.s.currentObjectInfo.SetState("default");
         ObjectManager.s.SetCurrentObjectInfo(this);
         SetState("selected");

@@ -55,10 +55,11 @@ public class ObjectManager : MonoBehaviour
 
     public void PrepareObject(Vector3 _pos){
         if(currentObjectInfo.objectAmountLimit != -1 && currentObjectInfo.objectAmount >= currentObjectInfo.objectAmountLimit){
-            Debug.Log("Object amount limit reached");
+            //Debug.Log("Object amount limit reached");
             return;
         }
         GameObject obj = Instantiate(currentObjectInfo.objectPrefab, _pos, Quaternion.identity, transform);
+        obj.transform.eulerAngles += transform.eulerAngles;
         currentObjectInstance = obj.GetComponent<ObjectInstance>();
     }
 

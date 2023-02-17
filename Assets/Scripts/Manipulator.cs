@@ -17,16 +17,23 @@ public class Manipulator : MonoBehaviour
         }
         inputActions = new InputActions();
     }
-    //public GameObject marker;
+    [Header("Rotation")]
+    public bool isHolding, isClicking;
+    float holdingTimerLimit = 0.15f;//click longer than this is hold
+    float holdingTimer = 0f;
+    public float holdStartPosX, holdDeltaX, holdStartRotY;
     public Camera camera;
+    public float rotationSpeed = 1f;
+    public bool allowRotation = true;
     
     //2d to 3d switch
+    [Header("Perspective")]
     public Button perspectiveSwitchButton;
     public Vector3 cameraPos3D, cameraPos2D, cameraRot3D, cameraRot2D;
     public float cameraSize3D, cameraSize2D;
     public bool isCamera2D;
 
-
+    [Header("GameMode")]
     //design, use
     public string currentMode = "design";
 
@@ -62,7 +69,10 @@ public class Manipulator : MonoBehaviour
     void Start()
     {
         perspectiveSwitchButton.onClick.AddListener(ToggleCamera);
-        inputActions.Default.Click.canceled += OnClick;
+        inputActions.Default.Click.performed += ClickStart;
+        inputActions.Default.Click.canceled += ClickEnd;
+
+        //inputActions.Default.Click.canceled += OnClick;
         cameraPos3D = camera.transform.position;
         cameraRot3D = camera.transform.eulerAngles;
         cameraPos2D = new Vector3(12.2f, 22.7f, 8.1f);
@@ -78,13 +88,56 @@ public class Manipulator : MonoBehaviour
         inputActions.Disable();
     }
 
+    void ClickStart(InputAction.CallbackContext context){
+        isClicking = true;
+        //get mouse position
+    }
+
+    void ClickEnd(InputAction.CallbackContext context){
+        OnClick();
+        isClicking = false;
+        isHolding = false;
+        holdingTimer = 0f;
+    }
+
+    void HoldStart(){
+        holdStartPosX = mousePos.x;
+        holdStartRotY = ObjectManager.s.gameObject.transform.eulerAngles.y;
+
+        // Debug.Log("holding start " + holdStartPosX);
+        // Debug.Log("holding start angles " +  ObjectManager.s.gameObject.transform.eulerAngles);
+        isHolding = true;
+        isClicking = false;
+        holdingTimer = 0f;
+    }
+
     // Update is called once per frame
     void Update()
     {
 
-        //Hovering
+        //Get Position
         mousePos = Mouse.current.position.ReadValue();
         worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+
+
+        //see if it's clicking or holding
+        if(isClicking && !isHolding){
+            holdingTimer += Time.deltaTime;
+            if(holdingTimer > holdingTimerLimit){
+                HoldStart();
+            }
+        }else if(isHolding && !hoveringObject && !BlockManager.s.hoveredBlock){
+            holdDeltaX = (mousePos.x - holdStartPosX) / Screen.width;
+            //0.5f = 360 degrees
+            ObjectManager.s.gameObject.transform.eulerAngles = new Vector3(0f, holdDeltaX * 720f + holdStartRotY, 0f);
+            //Debug.Log("mousepos " + holdDeltaX);
+            return;
+            
+        }
+
+
+
+        //Debug.Log("angles " +  ObjectManager.s.gameObject.transform.eulerAngles);
 
         //Update Ray for everybody
         mouseRay = new Ray(worldPos, camera.transform.forward);
@@ -208,13 +261,13 @@ public class Manipulator : MonoBehaviour
         // measureZText.SetText(boundPosition.z.ToString("0.00") + "m");
     }
 
-    void OnClick(InputAction.CallbackContext context){
+    void OnClick(){
 
         //Debug.Log("Clicking manipulator");
         //If hovering on Object
         if(hoveringObject){
             hoveringObject.GetComponent<EnergyObject>().OnClick();
-            Debug.Log("Click");
+            //Debug.Log("Click");
         }
 
         if(currentMode == "use"){

@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject sidebarContainer, menuContainer, modeButtonContainer;
 
-    public Text totalEnergyGeneratingText, totalEnergyUsingText, totalEnergyStoringText;
+    public Text solarAmount, solarStats, batteryAmount, batteryStats, applianceAmount, applianceStats;
 
     public Button useModeButton;
 
@@ -49,6 +49,25 @@ public class UIManager : MonoBehaviour
         //     energyObject.ToggleConnectors(_name == "use");
         // }
 
+    }
+
+    public void UpdateSolarStats(int _amount, float _V, float _A, float _W){
+        solarAmount.text = "x" + _amount.ToString();
+        //display status at different lines for solarStats
+        solarStats.text = _V.ToString("0.0") + "V" + "\n" + _A.ToString("0.0") + "A" + "\n" + (_W/1000f).ToString("0.0") + "kW";
+    }
+
+    public void UpdateBatteryStats(int _amount, float _totalW, float _currentW, float _percentage, float _V, float _inAmps, float _outAmps){
+        batteryAmount.text = "x" + _amount.ToString();
+        //display status at different lines for batteryStats
+        batteryStats.text = (_currentW/1000f).ToString("0.0") + "kW/" + (_totalW/1000f).ToString("0.0") + "kW [" + _percentage.ToString("0") + "%]" + "\n" + _V.ToString("0.0") + "V" + "\n" + "In: " + _inAmps.ToString("0.0") + "A" + "\n" + "Out:" + _outAmps.ToString("0.0") + "A";
+
+    }
+
+    public void UpdateAppliancesStats(int _amount, float _totalA, float _totalV){
+        applianceAmount.text = "x" + _amount.ToString();
+        //display status at different lines for applianceStats
+        applianceStats.text = _totalV.ToString("0") + "V" + "\n" + _totalA.ToString("0.0") + "A";
     }
 
     public void ToggleUseMode(){

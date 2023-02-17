@@ -25,7 +25,6 @@ public class EnergyManager : MonoBehaviour
     public float inputAmps = 0;
     public float generatorEnergyLoss = 0.75f;
     public List<Generator> generators = new List<Generator>();
-    public GameObject energyGeneratorIndicator;
     
     [Header("__Batteries__")]
     public float batteryOperatingVolts = 0;
@@ -44,6 +43,7 @@ public class EnergyManager : MonoBehaviour
     public float currentACAmps = 0;
     public float dischargePower, dischargePowerKW;
     public List<Appliance> appliances = new List<Appliance>();
+    public GameObject applianceIndicatorPrefab;
 
     [Header("__EnergyObjects__")]
     public List<EnergyObject> energyObjects = new List<EnergyObject>();
@@ -54,7 +54,6 @@ public class EnergyManager : MonoBehaviour
     [Header("__Charge Controller & Inverter__")]
     public ChargeController chargeController;
     public Inverter inverter;
-    public GameObject chargeIndicatorPrefab;
 
     [Header("__Circuitry Wizardry__")]
     public GameObject connectorPrefab;
@@ -66,8 +65,7 @@ public class EnergyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        sunAmount = 1;
+        UpdateSunAmount(1f);
         //indicator for totally generating energy [POSSIBLY DEPRECATED]
         //energyGeneratorIndicator.SetActive(false);
     }
@@ -122,7 +120,7 @@ public class EnergyManager : MonoBehaviour
             inputAmps = generators[0].inputAmps;
             inputPower = inputVolts * inputAmps;
         }
-        UpdateUIInputPower();
+        UIManager.s.UpdateSolarStats(generators.Count, inputVolts, inputAmps, inputPower);
 
         if(batteries.Count > 0){
 
@@ -151,7 +149,7 @@ public class EnergyManager : MonoBehaviour
         }
         //Total power drawn out from the system
         dischargePower = currentACAmps * operatingACVolts;
-        UpdateUIDischargePower();
+        UIManager.s.UpdateAppliancesStats(appliances.Count, currentACAmps, operatingACVolts);
         
         //amount of amps discharged from battery
         batteryCurrentOutputAmps = (batteryOperatingVolts == 0) ? 0 : (operatingACVolts * currentACAmps) / batteryOperatingVolts;
@@ -182,21 +180,7 @@ public class EnergyManager : MonoBehaviour
             inverter.UpdateData();
         
         //from an array of solar & batteries, take away energy one by one based on appliance needs
-        UpdateUIBatteryChargedPercentage();
-    }
-
-    void UpdateUIInputPower(){
-        inputPowerKW = inputPower / 1000f;
-        UIManager.s.totalEnergyGeneratingText.text = inputPowerKW.ToString("0.00") + " kW";
-    }
-
-    void UpdateUIBatteryChargedPercentage(){
-        UIManager.s.totalEnergyStoringText.text = batteryChargedPercentage.ToString("0") + " %";
-    }
-
-    void UpdateUIDischargePower(){
-        dischargePowerKW = dischargePower / 1000f;
-        UIManager.s.totalEnergyUsingText.text = dischargePowerKW.ToString("0.00") + "kW";
+        UIManager.s.UpdateBatteryStats(batteries.Count, batteryTotalAmpHours * batteryOperatingVolts, batteryCurrentAmpHours * batteryOperatingVolts, batteryChargedPercentage, batteryOperatingVolts, batteryCurrentInputAmps, batteryCurrentOutputAmps);
     }
 
     //PROBABLY DEPRECATED
@@ -215,6 +199,6 @@ public class EnergyManager : MonoBehaviour
     public void UpdateSunAmount(float _sunAmount){
         sunAmount = _sunAmount;
         //get the Intensity parameter on the Skybox material
-        RenderSettings.skybox.SetFloat("_Intensity", sunAmount);
+        RenderSettings.skybox.SetFloat("_Intensity", sunAmount* 1.2f + 0.1f);
     }
 }

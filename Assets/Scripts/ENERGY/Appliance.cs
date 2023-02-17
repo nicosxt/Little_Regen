@@ -7,11 +7,13 @@ public class Appliance : EnergyObject
 {
     public bool isOn = false;
     public bool isConnecteddToEnergySource = false;
-    public GameObject chargeIndicator;
 
     public float currentDischargingAmperage;
     public TextMeshPro dischargeAmpsText;
     public float dischargingAmperage;
+
+    public GameObject applianceIndicator;
+    public TextMeshPro applianceIndicatorText;
 
     [Header("__Circuitry Wizardry__")]
     public Connector connector;
@@ -27,13 +29,16 @@ public class Appliance : EnergyObject
     {
         currentDischargingAmperage = isOn ? dischargingAmperage : 0;
 
-        dischargeAmpsText.text = currentDischargingAmperage.ToString("F2") + "A";
+        dischargeAmpsText.text = currentDischargingAmperage.ToString("0.0") + "A";
         base.Update();
         
     }
 
     public override void OnEnable(){
         base.OnEnable();
+    }
+
+    protected virtual void OnInitiateAppliance(){
     }
 
     public override void OnInitiate(ObjectInstance _objectInstance){
@@ -43,18 +48,20 @@ public class Appliance : EnergyObject
         //initiate connectors
         connector.OnInitiate(this, _objectInstance);
 
-        chargeIndicator = Instantiate(EnergyManager.s.chargeIndicatorPrefab, transform);
-        chargeIndicator.transform.localPosition = new Vector3(0, -0.45f, 0);
-        chargeIndicator.SetActive(isOn);
         //add self to EnergyManager
         EnergyManager.s.appliances.Add(this);
+        OnInitiateAppliance();
         base.OnInitiate(_objectInstance);
     }
 
+    protected virtual void ToggleAppliance(bool _on){}
 
     void FlipSwitch(){
         isOn = !isOn;
-        chargeIndicator.SetActive(isOn);
+        
+        applianceIndicator.SetActive(isOn);
+        applianceIndicatorText.text = isOn ? "ON" : "OFF";
+        ToggleAppliance(isOn);
     }
 
     public override void OnClick(){
