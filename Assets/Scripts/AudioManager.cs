@@ -36,24 +36,26 @@ public class AudioManager : MonoBehaviour
 
     public void ToggleSpeaker(bool _on, Speaker _speaker){
         //add / remove speaker to speakersOn
-        if(_on){
-            speakersOn.Add(_speaker);
-        } else {
-            speakersOn.Remove(_speaker);
-        }
 
-        //if speaker is turned off and no speaker is on
-        if(speakersOn.Count == 0){
-            mainAudioSource.Stop();
-            return;
-        }
+        mainAudioSource.Play();
+        // if(_on){
+        //     speakersOn.Add(_speaker);
+        // } else {
+        //     speakersOn.Remove(_speaker);
+        // }
 
-        mainAudioSource.volume = (float) speakersOn.Count / (float) totalSpeakers.Count;
+        // //if speaker is turned off and no speaker is on
+        // if(speakersOn.Count == 0){
+        //     mainAudioSource.Stop();
+        //     return;
+        // }
 
-        //when a speaker is turned on and no music is playing
-        if(!mainAudioSource.isPlaying && _on){
-            mainAudioSource.Play();
-        }
+        // mainAudioSource.volume = (float) speakersOn.Count / (float) totalSpeakers.Count;
+
+        // //when a speaker is turned on and no music is playing
+        // if(!mainAudioSource.isPlaying && _on){
+        //     mainAudioSource.Play();
+        // }
 
     }
 

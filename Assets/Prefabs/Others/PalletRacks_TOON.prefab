@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 5054707333259978643}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.7513468, y: 2.7513468, z: 2.7513468}
+  m_LocalScale: {x: 2.1920257, y: 2.1920257, z: 2.1920257}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 230886007187661668}
@@ -177,11 +177,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectStatus: pending
-  originalMaterials: []
-  pendingMaterials: []
-  errorMaterials: []
-  objectMeshRenderer: {fileID: 0}
-  canPlace: 0
-  colliders: []
-  boundPosition: {fileID: 1287377476977988180}
-  boundOffset: {x: 0, y: 0, z: 0}
+  objectMeshRenderers: []
+  rendererMaterialPairs: []
+  hasPlacingConstraints: 0
+  energyObject: {fileID: 0}
+  person: {fileID: 0}
+  hasOneGroup: 0
+  isFirstInGroup: 0
+  boundPosX: {x: 0, y: 0}
+  boundPosZ: {x: 0, y: 0}
+  debugObjects: []
